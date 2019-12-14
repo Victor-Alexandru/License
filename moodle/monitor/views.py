@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from monitor.models import Notification, Skill
-from monitor.serializers import NotificationSerializer, SkillSerializer
+from monitor.models import Notification, Skill, Group
+from monitor.serializers import NotificationSerializer, UserSerializer , SkillSerializer, GroupSerializer
 from rest_framework import generics
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -24,3 +25,31 @@ class SkillList(generics.ListCreateAPIView):
 class SkillDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Skill.objects.all()
     serializer_class = SkillSerializer
+
+
+class UserList(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class GroupList(generics.ListCreateAPIView):
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+
+    def perform_create(self, serializer):
+        import  ipdb;
+        ipdb.set_trace()
+        serializer.save(owner=self.request.user)
+        print("------------------------")
+        print("HEREEE")
+        print("------------------------")
+
+
+class GroupDetail(generics.RetrieveAPIView):
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
