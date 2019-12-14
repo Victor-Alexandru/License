@@ -45,3 +45,66 @@ class Notification(models.Model):
     # TODO: enums for colors
     background_color = models.CharField(null=False, blank=False, max_length=250)
     # TODO: add the video for notification
+
+
+class Group(models.Model):
+    name = models.CharField(max_length=250, null=True, blank=True)
+    group_size = models.IntegerField(null=True, blank=True)
+    estimated_work_duration = models.IntegerField(null=True, blank=True)
+    skill = models.ForeignKey(Skill, on_delete=models.DO_NOTHING)
+
+
+class UserGroup(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    isTeacher = models.BooleanField(default=False)
+    isLearner = models.BooleanField(default=True)
+    start_at = models.DateField(null=True)
+
+    class Meta:
+        unique_together = (("user", "group"),)
+
+
+class GroupNotification(models.Model):
+    LOW = 'LW'
+    MEDIUM = 'MD'
+    HIGH = 'HG'
+    PRIORITIES = (
+        ('LW', 'LOW'),
+        ('MD', 'MEDIUM'),
+        ('HG', 'HIGH'),
+    )
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    notification = models.ForeignKey(Notification, on_delete=models.DO_NOTHING)
+    created_at = models.DateField(null=True)
+    priority = models.CharField(max_length=2,
+                                choices=PRIORITIES,
+                                default=LOW, )
+
+
+class Survey(models.Model):
+    name = models.CharField(max_length=250, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    aim_for_survey = models.TextField(null=True, blank=True)
+
+
+class EvaluationSession(models.Model):
+    start_date = models.DateField()
+    end_date = models.DateField()
+    name = models.CharField(max_length=250, null=True, blank=True)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    survey = models.ForeignKey(Survey, on_delete=models.DO_NOTHING)
+
+
+class SurveyQuestion(models.Model):
+    type = models.CharField(max_length=250, null=True, blank=True)
+    points = models.IntegerField()
+    text = models.TextField()
+    survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
+
+
+class SurveyAnswer(models.Model):
+    isValid = models.BooleanField(default=False)
+    text = models.TextField()
+    points_get = models.IntegerField()
+    survey_question = models.ForeignKey(SurveyQuestion, on_delete=models.CASCADE)
