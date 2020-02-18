@@ -39,12 +39,12 @@ class _HomePageState extends State<HomePage> {
   _getCurrentLocation() {
     geolocator
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-        .then((Position position) {
+        .then((Position position) async {
       setState(() {
         _currentPosition = position;
       });
 
-      _getAddressFromLatLng();
+      await _getAddressFromLatLng();
     }).catchError((e) {
       print(e);
     });
@@ -56,11 +56,12 @@ class _HomePageState extends State<HomePage> {
           _currentPosition.latitude, _currentPosition.longitude);
 
       Placemark place = p[0];
-
-      setState(() {
-        _currentAddress =
-            "${place.locality}, ${place.postalCode}, ${place.country}";
-      });
+      if (place != null) {
+        setState(() {
+          _currentAddress =
+              "${place.locality}, ${place.postalCode}, ${place.country}";
+        });
+      }
     } catch (e) {
       print(e);
     }
