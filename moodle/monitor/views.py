@@ -2,7 +2,9 @@ from django.shortcuts import render
 from monitor.models import Notification, Skill, Group
 from monitor.serializers import NotificationSerializer, UserSerializer , SkillSerializer, GroupSerializer
 from rest_framework import generics
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from monitor.models import User
+
 
 
 # Create your views here.

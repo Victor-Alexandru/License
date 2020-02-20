@@ -1,7 +1,5 @@
 from rest_framework import serializers
-from monitor.models import Notification, Skill, Group, Survey, EvaluationSession, SurveyQuestion
-
-from django.contrib.auth.models import User
+from monitor.models import Notification, Skill, Group, Survey, EvaluationSession, SurveyQuestion, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -9,7 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'groupings']
+        fields = ['id', 'first_name', 'surname', 'user_name', 'email', 'password', 'location', 'groupings']
 
 
 class NotificationSerializer(serializers.ModelSerializer):
