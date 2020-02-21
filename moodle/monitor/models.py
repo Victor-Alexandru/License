@@ -11,7 +11,7 @@ class User(models.Model):
     location = models.TextField(null=True, blank=True)
     # TODO: add image file
 
-
+ 
 class Skill(models.Model):
     # TODO: enums for skills and Domain Skill
     name = models.TextField(null=True, blank=True)
