@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-// import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
+import 'package:geocoder/geocoder.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -10,11 +9,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-
   // Position _currentPosition;
   String _currentAddress;
-  String _apiUsersUrl = 'http://192.168.1.102:8000/monitor/users';
+  // http://192.168.1.105:8000/monitor/users/
+  String _apiUsersUrl = 'http://192.168.1.105:8000/monitor/users';
 
   @override
   Widget build(BuildContext context) {
@@ -71,29 +69,39 @@ class _HomePageState extends State<HomePage> {
 
   _getCurrentLocation() async {
     print(" -----  You pressed here START ----- ");
-    // geolocator
-    //     .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-    //     .then((Position position) async {
-    //   setState(() {
-    //     _currentPosition = position;
-    //   });
-    //   await _getAddressFromLatLng();
-    // }).catchError((e) {
-    //   print(e);
-    // });
+    //code from flutter pub documentation
+    Location location = new Location();
 
-    var location = new Location();
-    var currentLocation;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      currentLocation = await location.getLocation();
-      print(currentLocation.toString());
-    } on PlatformException catch (e) {
-      if (e.code == 'PERMISSION_DENIED') {
-        print('Permission denied');
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
       }
-      currentLocation = null;
     }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.DENIED) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.GRANTED) {
+        return;
+      }
+    }
+
+    _locationData = await location.getLocation();
+
+    final coordinates =
+        new Coordinates(_locationData.latitude, _locationData.longitude);
+    var addresses =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
+
+    var first = addresses.first;
+
+    print("${first.locality}");
 
     print(" -----  You pressed here END ----- ");
   }
