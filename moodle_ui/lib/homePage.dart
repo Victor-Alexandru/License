@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   // http://192.168.1.105:8000/monitor/users/
   String _apiUsersUrl = 'http://192.168.1.105:8000/monitor/users';
 
-  String _apiPutUrl = 'http://192.168.1.105:8000/monitor/users/1';
+  String _apiPutUrl = 'http://192.168.1.105:8000/monitor/users/1/';
 
   @override
   Widget build(BuildContext context) {
@@ -114,19 +114,25 @@ class _HomePageState extends State<HomePage> {
     print("${first.locality}");
 
     String json = '{"location":"' + preciseLocality + '"}';
+
     Map<String, String> headers = {"Content-type": "application/json"};
 
+    try {
+      Response response =
+          await http.patch(_apiPutUrl, headers: headers, body: json);
 
-    Response response =
-        await http.put(_apiPutUrl, headers: headers, body: json);
-    
+      print(response);
 
-    if (response.statusCode == 200) {
-      print("put success");
-    } else {
-      print("put not success");
+      if (response.statusCode == 200) {
+        print("put success");
+      } else {
+        print("put not success");
+      }
+    } catch (e) {
+      print(e);
     }
-    //making a put request to set the locality
+
+    //making a patch request to set the locality
 
     print(" -----  _getCurrentLocation END ----- ");
   }

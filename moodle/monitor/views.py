@@ -38,6 +38,10 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    def perform_update(self, serializer):
+        print(serializer)
+        serializer.save()
+
 
 class GroupList(generics.ListCreateAPIView):
     queryset = Group.objects.all()
