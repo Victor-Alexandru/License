@@ -30,8 +30,16 @@ class SkillDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class UserList(generics.ListCreateAPIView):
-    queryset = User.objects.all()
     serializer_class = UserSerializer
+
+    def get_queryset(self):
+        # import  ipdb;
+        # ipdb.set_trace()
+        locality = self.request.query_params.get("locality")
+        if locality:
+            return User.objects.all().filter(location=locality)
+        else:
+            return User.objects.all()
 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):

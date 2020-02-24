@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
               splashColor: Colors.blueAccent,
               child: Text("Set your location"),
               onPressed: () {
-                _getCurrentLocation();
+                _makePatchRequest();
               },
             ),
             FlatButton(
@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
               splashColor: Colors.blueAccent,
               child: Text("Find nearby  users"),
               onPressed: () {
-                _getCurrentLocation();
+                _getNearbyUsers();
               },
             ),
             FlatButton(
@@ -111,7 +111,27 @@ class _HomePageState extends State<HomePage> {
 
     var preciseLocality = first.locality;
 
-    print("${first.locality}");
+    print(" -----  _getCurrentLocation END ----- ");
+
+    return preciseLocality;
+  }
+
+  _getUsers() {
+    http.get(_apiUsersUrl).then((response) {
+      print(response.body);
+    });
+  }
+
+  _getNearbyUsers() async {
+    var preciseLocality = await this._getCurrentLocation();
+    http.get(_apiUsersUrl).then((response) {
+      print(response.body);
+    });
+
+  }
+
+  _makePatchRequest() async {
+    var preciseLocality = await this._getCurrentLocation();
 
     String json = '{"location":"' + preciseLocality + '"}';
 
@@ -133,14 +153,6 @@ class _HomePageState extends State<HomePage> {
     }
 
     //making a patch request to set the locality
-
-    print(" -----  _getCurrentLocation END ----- ");
-  }
-
-  _getUsers() {
-    http.get(_apiUsersUrl).then((response) {
-      print(response.body);
-    });
   }
 
   // _getAddressFromLatLng() async {
