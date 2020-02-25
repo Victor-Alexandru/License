@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
               disabledTextColor: Colors.black,
               padding: EdgeInsets.all(8.0),
               splashColor: Colors.blueAccent,
-              child: Text("Find nearby  users"),
+              child: Text("Find users in your location"),
               onPressed: () {
                 _getNearbyUsers();
               },
@@ -124,10 +124,13 @@ class _HomePageState extends State<HomePage> {
 
   _getNearbyUsers() async {
     var preciseLocality = await this._getCurrentLocation();
-    http.get(_apiUsersUrl).then((response) {
+    Map<String, String> queryParameters = {
+      'locality': preciseLocality,
+    };
+    var _getNearbtUsersUrlEnpoint = Uri.http('192.168.1.105:8000', 'monitor/users/', queryParameters);
+    http.get(_getNearbtUsersUrlEnpoint).then((response) {
       print(response.body);
     });
-
   }
 
   _makePatchRequest() async {
