@@ -37,7 +37,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/monitor/serializers.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
+            <state relative-caret-position="153">
               <caret line="10" selection-start-line="10" selection-end-line="10" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
@@ -189,17 +189,18 @@
       <workItem from="1582469938529" duration="741000" />
       <workItem from="1582554741640" duration="3733000" />
       <workItem from="1582634222811" duration="876000" />
+      <workItem from="1582733665923" duration="400000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25247000" />
+    <option name="totallyTimeSpent" value="25647000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17110874" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12739871" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -303,7 +304,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/monitor/serializers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
+        <state relative-caret-position="153">
           <caret line="10" selection-start-line="10" selection-end-line="10" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
