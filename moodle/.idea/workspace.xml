@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="94aa235e-7d5b-47bc-a992-56430812d076" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/monitor/management/commands/set_location.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/moodle/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/moodle/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../moodle_ui/lib/homePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../moodle_ui/lib/homePage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../moodle_ui/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../moodle_ui/lib/main.dart" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -164,12 +161,12 @@
       <workItem from="1582469938529" duration="741000" />
       <workItem from="1582554741640" duration="3733000" />
       <workItem from="1582634222811" duration="876000" />
-      <workItem from="1582733665923" duration="2177000" />
+      <workItem from="1582733665923" duration="2777000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27424000" />
+    <option name="totallyTimeSpent" value="28024000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />

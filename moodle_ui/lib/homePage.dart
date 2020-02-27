@@ -14,9 +14,9 @@ class _HomePageState extends State<HomePage> {
   String _currentUserId = '1';
   String _currentAddress;
   // http://192.168.1.105:8000/monitor/users/
-  String _apiUsersUrl = 'http://192.168.1.105:8000/monitor/users';
+  String _apiUsersUrl = 'http://192.168.1.103:8000/monitor/users';
 
-  String _apiPutUrl = 'http://192.168.1.105:8000/monitor/users/1/';
+  String _apiPutUrl = 'http://192.168.1.103:8000/monitor/users/1/';
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +127,8 @@ class _HomePageState extends State<HomePage> {
     Map<String, String> queryParameters = {
       'locality': preciseLocality,
     };
-    var _getNearbtUsersUrlEnpoint = Uri.http('192.168.1.105:8000', 'monitor/users/', queryParameters);
+    var _getNearbtUsersUrlEnpoint =
+        Uri.http('192.168.1.103:8000', 'monitor/users/', queryParameters);
     http.get(_getNearbtUsersUrlEnpoint).then((response) {
       print(response.body);
     });

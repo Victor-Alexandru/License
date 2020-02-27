@@ -58,6 +58,29 @@ class User {
         _email = json['email'].toString(),
         _location = json['location'].toString();
 
+  Map<String, dynamic> toMap() {
+    var map = new Map<String, dynamic>();
+    map['id'] = _id;
+    map["first_name"] = _first_name;
+    map["surname"] = _surname;
+    map["user_name"] = _user_name;
+    map["password"] = _password;
+    map["location"] = _location;
+    map["email"] = _email;
+
+    return map;
+  }
+
+  User.map(dynamic obj) {
+    this._id = obj["id"];
+    this._first_name = obj["first_name"];
+    this._surname = obj["surname"];
+    this._user_name = obj["user_name"];
+    this._password = obj["password"];
+    this._location = obj["location"];
+    this._email = obj["email"];
+  }
+
   User(
     String first_name,
     String surname,
