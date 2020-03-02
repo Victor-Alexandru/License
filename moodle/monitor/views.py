@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from monitor.models import Notification, Skill, Group
-from monitor.serializers import NotificationSerializer, UserSerializer , SkillSerializer, GroupSerializer
+from monitor.serializers import NotificationSerializer, UserSerializer, SkillSerializer, GroupSerializer
 from rest_framework import generics
 # from django.contrib.auth.models import User
 from monitor.models import User
-
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 
 # Create your views here.
@@ -56,7 +58,7 @@ class GroupList(generics.ListCreateAPIView):
     serializer_class = GroupSerializer
 
     def perform_create(self, serializer):
-        import  ipdb;
+        import ipdb;
         ipdb.set_trace()
         serializer.save(owner=self.request.user)
         print("------------------------")
@@ -67,3 +69,11 @@ class GroupList(generics.ListCreateAPIView):
 class GroupDetail(generics.RetrieveAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+
+
+class HelloView(APIView):
+    permission_classes = (IsAuthenticated,)  # <-- And here
+
+    def get(self, request):
+        content = {'message': 'Hello, World!'}
+        return Response(content)
