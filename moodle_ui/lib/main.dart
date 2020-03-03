@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:login_app/auth.dart';
-import 'package:login_app/routes.dart';
+import 'package:moodle_ui/auth.dart';
+import 'package:moodle_ui/routes.dart';
 
 void main() => runApp(new LoginApp());
 

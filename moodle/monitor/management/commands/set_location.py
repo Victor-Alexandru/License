@@ -1,4 +1,4 @@
-from monitor.models import User
+from monitor.models import Site_User
 from django.core.management.base import BaseCommand
 from django.utils.crypto import get_random_string
 
@@ -11,7 +11,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         location = kwargs['location']
-        for user in User.objects.all():
+        for user in Site_User.objects.all():
             user.location = location
             user.save()
 

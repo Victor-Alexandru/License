@@ -1,17 +1,18 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 
-class User(AbstractUser):
+
+#
+class Site_User(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=250, null=True, blank=True)
     surname = models.CharField(max_length=250, null=True, blank=True)
-    user_name = models.CharField(max_length=250, null=True, blank=True)
-    email = models.EmailField()
     password = models.TextField(null=True, blank=True)
     # TODO: enums for Location ,maybe county added
     location = models.TextField(null=True, blank=True)
     # TODO: add image file
 
- 
+
 class Skill(models.Model):
     # TODO: enums for skills and Domain Skill
     name = models.TextField(null=True, blank=True)
@@ -28,7 +29,7 @@ class UserSkill(models.Model):
         ('EX', 'Expert'),
         ('MS', 'Master'),
     )
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    user = models.ForeignKey('Site_User', on_delete=models.CASCADE)
     skill = models.ForeignKey(Skill, on_delete=models.CASCADE)
     # TODO: enums for level
     level = models.CharField(max_length=2,
@@ -51,12 +52,12 @@ class Group(models.Model):
     group_size = models.IntegerField(null=True, blank=True)
     estimated_work_duration = models.IntegerField(null=True, blank=True)
     skill = models.ForeignKey(Skill, on_delete=models.DO_NOTHING)
-    owner = models.ForeignKey('User', related_name="groupings"
+    owner = models.ForeignKey('Site_User', related_name="groupings"
                               , on_delete=models.CASCADE, null=False)
 
 
 class UserGroup(models.Model):
-    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    user = models.ForeignKey('Site_User', on_delete=models.CASCADE)
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     isTeacher = models.BooleanField(default=False)
     isLearner = models.BooleanField(default=True)

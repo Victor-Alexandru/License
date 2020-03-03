@@ -1,9 +1,9 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render
-from monitor.models import Notification, Skill, Group
-from monitor.serializers import NotificationSerializer, UserSerializer, SkillSerializer, GroupSerializer
+from monitor.models import Notification, Skill, Group,Site_User
+from monitor.serializers import NotificationSerializer, SkillSerializer, GroupSerializer, UserSerializer, \
+    SiteUserSerializer
 from rest_framework import generics
-# from django.contrib.auth.models import User
-from monitor.models import User
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -43,13 +43,40 @@ class UserList(generics.ListCreateAPIView):
         else:
             return User.objects.all()
 
+    def perform_create(self, serializer):
+        serializer.save()
+
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
+
     serializer_class = UserSerializer
 
     def perform_update(self, serializer):
-        print(serializer)
+        serializer.save()
+
+
+
+class SiteUserList(generics.ListCreateAPIView):
+    serializer_class = SiteUserSerializer
+
+    def get_queryset(self):
+        locality = self.request.query_params.get("locality")
+        if locality:
+            return Site_User.objects.all().filter(location=locality)
+        else:
+            return Site_User.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+
+class SiteUserDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Site_User.objects.all()
+
+    serializer_class = SiteUserSerializer
+
+    def perform_update(self, serializer):
         serializer.save()
 
 
