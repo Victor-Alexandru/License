@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render
-from monitor.models import Notification, Skill, Group,Site_User
+from rest_framework.decorators import api_view
+
+from monitor.models import Notification, Skill, Group, Site_User
 from monitor.serializers import NotificationSerializer, SkillSerializer, GroupSerializer, UserSerializer, \
     SiteUserSerializer
 from rest_framework import generics
@@ -56,7 +58,6 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
         serializer.save()
 
 
-
 class SiteUserList(generics.ListCreateAPIView):
     serializer_class = SiteUserSerializer
 
@@ -104,3 +105,26 @@ class HelloView(APIView):
     def get(self, request):
         content = {'message': 'Hello, World!'}
         return Response(content)
+
+
+@api_view(['POST'])
+def auth_user(request):
+    """
+    Retrieve, update or delete a code snippet.
+    """
+    print("-----------------------------------")
+    print("In authentication")
+    print("-----------------------------------")
+    # import ipdb;
+    # ipdb.set_trace()
+    if request.method == 'POST':
+        username = request.data.get('username')
+        password = request.data.get('password')
+        user = User.objects.all().filter(username=username, password=password)
+        if len(user) == 0:
+            return Response({"error": True, "error_msg": "Invalid credentitals"}, status=200)
+        else:
+            return Response({"error": False, "user": {
+                "username": username,
+                "password": password,
+            }}, status=200)

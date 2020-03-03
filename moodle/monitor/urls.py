@@ -3,7 +3,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 from monitor import views
 
 urlpatterns = [
-    path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
+    path('auth', views.auth_user, name='api_auth'),
     path('notifications/', views.NotificationList.as_view()),
     path('notifications/<int:pk>/', views.NotificationDetail.as_view()),
     path('skills/', views.SkillList.as_view()),

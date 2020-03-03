@@ -60,6 +60,7 @@ class LoginScreenState extends State<LoginScreen>
       child: new Text("LOGIN"),
       color: Colors.primaries[0],
     );
+    
     var loginForm = new Column(
       children: <Widget>[
         new Text(
@@ -92,7 +93,8 @@ class LoginScreenState extends State<LoginScreen>
             ],
           ),
         ),
-        _isLoading ? new CircularProgressIndicator() : loginBtn
+        loginBtn
+        // _isLoading ? new CircularProgressIndicator() : loginBtn
       ],
       crossAxisAlignment: CrossAxisAlignment.center,
     );
