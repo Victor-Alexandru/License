@@ -14,7 +14,7 @@ class SiteUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Site_User
-        fields = ['id', 'first_name', 'surname', 'password', 'location', 'groupings']
+        fields = ['id', 'first_name', 'surname', 'password', 'location', 'groupings', 'user']
 
 
 class NotificationSerializer(serializers.ModelSerializer):

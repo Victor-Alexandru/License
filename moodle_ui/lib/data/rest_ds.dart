@@ -5,8 +5,8 @@ import 'package:moodle_ui/models/user.dart';
 
 class RestDatasource {
   NetworkUtil _netUtil = new NetworkUtil();
-  static final BASE_URL = "http://YOUR_BACKEND_IP/login_app_backend";
-  static final LOGIN_URL = BASE_URL + "/login.php";
+  static final BASE_URL = "http://192.168.1.105:8000/monitor";
+  static final LOGIN_URL = BASE_URL + "/auth";
   // static final _API_KEY = "somerandomkey";
 
   Future<User> login(String username, String password) {

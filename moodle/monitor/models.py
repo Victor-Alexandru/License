@@ -2,7 +2,17 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-#
+def has_site_user(self):
+    try:
+        self.site_user
+    except Exception as e:
+        return False
+    return True
+
+
+User.add_to_class("has_site_user", has_site_user)
+
+
 class Site_User(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=250, null=True, blank=True)
