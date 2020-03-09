@@ -127,4 +127,4 @@ def auth_user(request):
             return Response({"error": False, "user": {
                 "username": username,
                 "password": password,
-           l }}, status=200)
+            }}, status=200)
