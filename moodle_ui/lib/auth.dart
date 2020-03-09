@@ -19,12 +19,12 @@ class AuthStateProvider {
   }
 
   void initState() async {
-    var db = new DatabaseHelper();
-    var isLoggedIn = await db.isLoggedIn();
-    if(isLoggedIn)
-      notify(AuthState.LOGGED_IN);
-    else
-      notify(AuthState.LOGGED_OUT);
+    // var db = new DatabaseHelper();
+    // var isLoggedIn = await db.isLoggedIn();
+    // if(isLoggedIn)
+    //   notify(AuthState.LOGGED_IN);
+    // else
+    //   notify(AuthState.LOGGED_OUT);
   }
 
   void subscribe(AuthStateListener listener) {

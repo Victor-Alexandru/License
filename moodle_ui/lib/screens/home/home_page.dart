@@ -3,20 +3,34 @@ import 'package:http/http.dart';
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
 import 'package:geocoder/geocoder.dart';
+import 'package:moodle_ui/models/user.dart';
 
 class HomePage extends StatefulWidget {
+  User _currentUser;
+
+  HomePage(User user) {
+    this._currentUser = user;
+  }
+
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState(this._currentUser);
 }
 
 class _HomePageState extends State<HomePage> {
   // Position _currentPosition;
   String _currentUserId = '1';
   String _currentAddress;
+  User _currentUser;
+  String _apiPutUrl;
   // http://192.168.1.105:8000/monitor/users/
-  String _apiUsersUrl = 'http://192.168.1.103:8000/monitor/users';
 
-  String _apiPutUrl = 'http://192.168.1.103:8000/monitor/users/1/';
+  _HomePageState(User user) {
+    this._currentUser = user;
+    _apiPutUrl =
+        'http://192.168.1.108:8000/monitor/users/' + user.id.toString() + '/';
+  }
+
+  String _apiUsersUrl = 'http://192.168.1.108:8000/monitor/users';
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +43,7 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             // if (_currentPosition != null) Text(_currentAddress),
+            Text("Welcome home!   " + _currentUser.toString()),
             FlatButton(
               color: Colors.blue,
               textColor: Colors.white,
@@ -128,7 +143,7 @@ class _HomePageState extends State<HomePage> {
       'locality': preciseLocality,
     };
     var _getNearbtUsersUrlEnpoint =
-        Uri.http('192.168.1.103:8000', 'monitor/users/', queryParameters);
+        Uri.http('192.168.1.108:8000', 'monitor/users/', queryParameters);
     http.get(_getNearbtUsersUrlEnpoint).then((response) {
       print(response.body);
     });
@@ -158,22 +173,4 @@ class _HomePageState extends State<HomePage> {
 
     //making a patch request to set the locality
   }
-
-  // _getAddressFromLatLng() async {
-  //   try {
-  //     List<Placemark> p = await geolocator.placemarkFromCoordinates(
-  //         _currentPosition.latitude, _currentPosition.longitude);
-
-  //     Placemark place = p[0];
-  //     if (place != null) {
-  //       setState(() {
-  //         print("${place.locality}");
-  //         _currentAddress =
-  //             "${place.locality}, ${place.postalCode}, ${place.country}";
-  //       });
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
 }

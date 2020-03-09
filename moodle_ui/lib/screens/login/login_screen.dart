@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:moodle_ui/auth.dart';
 import 'package:moodle_ui/data/database_helper.dart';
 import 'package:moodle_ui/models/user.dart';
+import 'package:moodle_ui/routes.dart';
+import 'package:moodle_ui/screens/home/home_page.dart';
 import 'package:moodle_ui/screens/login/login_screen_presenter.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -15,7 +17,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class LoginScreenState extends State<LoginScreen>
-    implements LoginScreenContract, AuthStateListener {
+    implements LoginScreenContract {
   BuildContext _ctx;
 
   bool _isLoading = false;
@@ -27,8 +29,6 @@ class LoginScreenState extends State<LoginScreen>
 
   LoginScreenState() {
     _presenter = new LoginScreenPresenter(this);
-    var authStateProvider = new AuthStateProvider();
-    authStateProvider.subscribe(this);
   }
 
   void _submit() {
@@ -47,12 +47,6 @@ class LoginScreenState extends State<LoginScreen>
   }
 
   @override
-  onAuthStateChanged(AuthState state) {
-    if (state == AuthState.LOGGED_IN)
-      Navigator.of(_ctx).pushReplacementNamed("/home");
-  }
-
-  @override
   Widget build(BuildContext context) {
     _ctx = context;
     var loginBtn = new RaisedButton(
@@ -60,7 +54,7 @@ class LoginScreenState extends State<LoginScreen>
       child: new Text("LOGIN"),
       color: Colors.primaries[0],
     );
-    
+
     var loginForm = new Column(
       children: <Widget>[
         new Text(
@@ -111,8 +105,7 @@ class LoginScreenState extends State<LoginScreen>
                 child: loginForm,
                 height: 300.0,
                 width: 300.0,
-                decoration: new BoxDecoration(
-                    color: Colors.grey.shade200.withOpacity(0.5)),
+                decoration: new BoxDecoration(color: Colors.white),
               ),
             ),
           ),
@@ -123,6 +116,7 @@ class LoginScreenState extends State<LoginScreen>
 
   @override
   void onLoginError(String errorTxt) {
+    print("00000000000000000000000000");
     _showSnackBar(errorTxt);
     setState(() => _isLoading = false);
   }
@@ -131,9 +125,14 @@ class LoginScreenState extends State<LoginScreen>
   void onLoginSuccess(User user) async {
     _showSnackBar(user.toString());
     setState(() => _isLoading = false);
-    var db = new DatabaseHelper();
-    await db.saveUser(user);
-    var authStateProvider = new AuthStateProvider();
-    authStateProvider.notify(AuthState.LOGGED_IN);
+
+    //changing the route
+    Route route = MaterialPageRoute(builder: (context) => HomePage(user));
+    
+    Navigator.pushReplacement(context, route);
+
+    // Navigator.of(_ctx).pushReplacementNamed("/home");
+    // var db = new DatabaseHelper();
+    // await db.saveUser(user);
   }
 }

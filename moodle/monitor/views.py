@@ -125,6 +125,7 @@ def auth_user(request):
             return Response({"error": True, "error_msg": "Invalid credentitals"}, status=200)
         else:
             return Response({"error": False, "user": {
+                "id": user[0].id,
                 "username": username,
                 "password": password,
             }}, status=200)
