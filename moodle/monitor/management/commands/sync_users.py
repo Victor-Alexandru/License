@@ -14,5 +14,5 @@ class Command(BaseCommand):
                 site_user = Site_User(user=user,
                                       first_name=user.username,
                                       surname=user.username,
-                                      password=user.password, location="1")
+                                      password=user.password, location="Cluj-Napoca")
                 site_user.save()
