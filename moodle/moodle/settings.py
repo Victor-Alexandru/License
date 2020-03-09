@@ -24,7 +24,7 @@ SECRET_KEY = ')fjq4zu_v+$a+v@vh*43(k=54aym=njslqrx$cypw1&--#6hjl'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.102', '192.168.1.105', '192.168.1.103']
+ALLOWED_HOSTS = ['192.168.1.102', '192.168.1.105', '192.168.1.103', '192.168.1.108']
 
 # Application definition
 
@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'monitor.apps.MonitorConfig',
-    'djoser',
 ]
 
 REST_FRAMEWORK = {
