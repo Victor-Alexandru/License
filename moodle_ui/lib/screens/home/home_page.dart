@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
 import 'package:geocoder/geocoder.dart';
+import 'package:moodle_ui/models/site-user.dart';
 import 'package:moodle_ui/models/user.dart';
 
 class HomePage extends StatefulWidget {
@@ -22,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   String _currentAddress;
   User _currentUser;
   String _apiPutUrl;
-  // http://192.168.1.105:8000/monitor/users/
+  var _nearbySiteUsers = new List<SiteUser>();
 
   _HomePageState(User user) {
     this._currentUser = user;
@@ -35,55 +38,23 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Location"),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            // if (_currentPosition != null) Text(_currentAddress),
-            Text("Welcome home!   " + _currentUser.toString()),
-            FlatButton(
-              color: Colors.blue,
-              textColor: Colors.white,
-              disabledColor: Colors.grey,
-              disabledTextColor: Colors.black,
-              padding: EdgeInsets.all(8.0),
-              splashColor: Colors.blueAccent,
-              child: Text("Set your location"),
-              onPressed: () {
-                _makePatchRequest();
-              },
-            ),
-            FlatButton(
-              color: Colors.blue,
-              textColor: Colors.white,
-              disabledColor: Colors.grey,
-              disabledTextColor: Colors.black,
-              padding: EdgeInsets.all(8.0),
-              splashColor: Colors.blueAccent,
-              child: Text("Find users in your location"),
+        appBar: AppBar(
+          title: Text("Find Nearby Location"),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.location_searching),
               onPressed: () {
                 _getNearbyUsers();
               },
             ),
-            FlatButton(
-              color: Colors.blue,
-              textColor: Colors.white,
-              disabledColor: Colors.grey,
-              disabledTextColor: Colors.black,
-              padding: EdgeInsets.all(8.0),
-              splashColor: Colors.blueAccent,
-              child: Text("Get Users"),
-              onPressed: () {
-                _getUsers();
-              },
-            )
           ],
         ),
-      ),
-    );
+        body: ListView.builder(
+          itemCount: _nearbySiteUsers.length,
+          itemBuilder: (context, index) {
+            return ListTile(title: Text(_nearbySiteUsers[index].firstName));
+          },
+        ));
   }
 
   _getCurrentLocation() async {
@@ -142,35 +113,44 @@ class _HomePageState extends State<HomePage> {
     Map<String, String> queryParameters = {
       'locality': preciseLocality,
     };
+
     var _getNearbtUsersUrlEnpoint =
-        Uri.http('192.168.1.108:8000', 'monitor/users/', queryParameters);
+        Uri.http('192.168.1.108:8000', 'monitor/site-users/', queryParameters);
+
     http.get(_getNearbtUsersUrlEnpoint).then((response) {
-      print(response.body);
+      // print(response.body);
+      setState(() {
+        Iterable list = json.decode(response.body);
+        _nearbySiteUsers =
+            list.map((model) => SiteUser.fromJson(model)).toList();
+        print(_nearbySiteUsers);
+      });
     });
   }
-
-  _makePatchRequest() async {
-    var preciseLocality = await this._getCurrentLocation();
-
-    String json = '{"location":"' + preciseLocality + '"}';
-
-    Map<String, String> headers = {"Content-type": "application/json"};
-
-    try {
-      Response response =
-          await http.patch(_apiPutUrl, headers: headers, body: json);
-
-      print(response);
-
-      if (response.statusCode == 200) {
-        print("put success");
-      } else {
-        print("put not success");
-      }
-    } catch (e) {
-      print(e);
-    }
-
-    //making a patch request to set the locality
-  }
 }
+
+// made if the user wants to set it's location
+// _makePatchRequest() async {
+//   var preciseLocality = await this._getCurrentLocation();
+
+//   String json = '{"location":"' + preciseLocality + '"}';
+
+//   Map<String, String> headers = {"Content-type": "application/json"};
+
+//   try {
+//     Response response =
+//         await http.patch(_apiPutUrl, headers: headers, body: json);
+
+//     print(response);
+
+//     if (response.statusCode == 200) {
+//       print("put success");
+//     } else {
+//       print("put not success");
+//     }
+//   } catch (e) {
+//     print(e);
+//   }
+
+//   //making a patch request to set the locality
+// }
