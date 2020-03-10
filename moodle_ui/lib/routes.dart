@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:moodle_ui/screens/home/home_page.dart';
-import 'package:moodle_ui/screens/home/home_screen.dart';
 import 'package:moodle_ui/screens/login/login_screen.dart';
 
 final routes = {

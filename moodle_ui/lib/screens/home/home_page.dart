@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:geocoder/geocoder.dart';
 import 'package:moodle_ui/models/site-user.dart';
 import 'package:moodle_ui/models/user.dart';
+import 'package:moodle_ui/screens/chat/chat_screen.dart';
 
 class HomePage extends StatefulWidget {
   User _currentUser;
@@ -35,26 +36,66 @@ class _HomePageState extends State<HomePage> {
 
   String _apiUsersUrl = 'http://192.168.1.108:8000/monitor/users';
 
+  Widget SiteUserCell(BuildContext ctx, int index) {
+    return GestureDetector(
+      onTap: () {
+        print("Tap on " + _nearbySiteUsers[index].firstName);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    ChatScreen(_currentUser, _nearbySiteUsers[index])));
+      },
+      child: Card(
+          margin: EdgeInsets.all(8),
+          elevation: 4.0,
+          child: Container(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    SizedBox(
+                      width: 16,
+                    ),
+                    Text(
+                      _nearbySiteUsers[index].firstName,
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                Icon(Icons.chat, color: Colors.blue),
+              ],
+            ),
+          )),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Find Nearby Location"),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.location_searching),
-              onPressed: () {
-                _getNearbyUsers();
-              },
-            ),
-          ],
-        ),
-        body: ListView.builder(
-          itemCount: _nearbySiteUsers.length,
-          itemBuilder: (context, index) {
-            return ListTile(title: Text(_nearbySiteUsers[index].firstName));
-          },
-        ));
+      appBar: AppBar(
+        title: Text("Find Nearby Users"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.location_searching),
+            onPressed: () {
+              _getNearbyUsers();
+            },
+          ),
+        ],
+      ),
+      body: Center(
+        child: Stack(children: <Widget>[
+          ListView.builder(
+            itemCount: _nearbySiteUsers.length,
+            itemBuilder: (context, index) => SiteUserCell(context, index),
+          ),
+        ]),
+      ),
+    );
   }
 
   _getCurrentLocation() async {
