@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class _ChatScreenState extends State<ChatScreen> {
   SiteUser _nearbyUser;
   List<UserMessage> _messages = new List();
   final _sendMessageController = TextEditingController();
+  Timer timer;
 
   _ChatScreenState(User cUser, SiteUser nUser) {
     this._currentUser = cUser;
@@ -41,6 +43,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     this._getMessages();
+    timer = Timer.periodic(Duration(seconds: 5), (Timer t) => _getMessages());
   }
 
   @override
@@ -172,6 +175,9 @@ class _ChatScreenState extends State<ChatScreen> {
         '192.168.1.108:8000', 'monitor/user-messages/', queryParameters);
 
     http.get(_getUsersMessagesUrlEnpoint).then((response) {
+      print("--------------------------");
+      print("Requesting messages ");
+      print("--------------------------");
       print(response.body);
       setState(() {
         Iterable list = json.decode(response.body);
