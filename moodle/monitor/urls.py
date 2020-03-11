@@ -13,6 +13,7 @@ urlpatterns = [
     path('users/<int:pk>/', views.UserDetail.as_view()),
     path('site-users/', views.SiteUserList.as_view()),
     path('site-users/<int:pk>/', views.SiteUserDetail.as_view()),
+    path('user-messages/', views.UserMessageList.as_view()),
     path('groups/', views.GroupList.as_view()),
     path('groups/<int:pk>/', views.GroupDetail.as_view()),
 ]

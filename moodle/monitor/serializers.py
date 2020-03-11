@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from monitor.models import Notification, Skill, Group, Survey, EvaluationSession, SurveyQuestion, Site_User
+from monitor.models import Notification, Skill, Group, Survey, EvaluationSession, SurveyQuestion, Site_User, UserMessage
 from django.contrib.auth.models import User
 
 
@@ -15,6 +15,12 @@ class SiteUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Site_User
         fields = ['id', 'first_name', 'surname', 'password', 'location', 'groupings', 'user']
+
+
+class UserMessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserMessage
+        fields = ['id', 'text', 'owner', 'to_user_msg', 'time']
 
 
 class NotificationSerializer(serializers.ModelSerializer):

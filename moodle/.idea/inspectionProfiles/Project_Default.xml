@@ -7,6 +7,7 @@
           <option value="monitor.models.Skill.objects" />
           <option value="monitor.models.Notification.objects" />
           <option value="monitor.models.Site_User.objects" />
+          <option value="monitor.models.UserMessage.objects" />
         </list>
       </option>
     </inspection_tool>

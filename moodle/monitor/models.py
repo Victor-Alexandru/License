@@ -20,7 +20,18 @@ class Site_User(models.Model):
     password = models.TextField(null=True, blank=True)
     # TODO: enums for Location ,maybe county added
     location = models.TextField(null=True, blank=True)
+
     # TODO: add image file
+
+    def __str__(self):
+        return self.first_name
+
+
+class UserMessage(models.Model):
+    owner = models.ForeignKey(Site_User, on_delete=models.CASCADE, related_name='from_user')
+    to_user_msg = models.ForeignKey(Site_User, on_delete=models.CASCADE, related_name='to_user')
+    time = models.DateTimeField(null=True, blank=True)
+    text = models.TextField(null=True, blank=True)
 
 
 class Skill(models.Model):

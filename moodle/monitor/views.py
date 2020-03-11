@@ -1,10 +1,11 @@
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.shortcuts import render
 from rest_framework.decorators import api_view
-
-from monitor.models import Notification, Skill, Group, Site_User
+from django.utils import timezone
+from monitor.models import Notification, Skill, Group, Site_User, UserMessage
 from monitor.serializers import NotificationSerializer, SkillSerializer, GroupSerializer, UserSerializer, \
-    SiteUserSerializer
+    SiteUserSerializer, UserMessageSerializer
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -79,6 +80,27 @@ class SiteUserDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def perform_update(self, serializer):
         serializer.save()
+
+
+class UserMessageList(generics.ListCreateAPIView):
+    serializer_class = UserMessageSerializer
+
+    def get_queryset(self):
+        first_user_id = self.request.query_params.get("first_user_id")
+        second_user_id = self.request.query_params.get("second_user_id")
+
+        if first_user_id and second_user_id:
+            first_user = Site_User.objects.all().get(pk=first_user_id)
+            second_user = Site_User.objects.all().get(pk=second_user_id)
+
+            return UserMessage.objects.all().filter(
+                Q(owner=first_user, to_user_msg=second_user) | Q(owner=second_user, to_user_msg=first_user)).order_by(
+                'time')
+
+        return UserMessage.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(time=timezone.now())
 
 
 class GroupList(generics.ListCreateAPIView):
