@@ -6,7 +6,7 @@ from django.utils import timezone
 from monitor.models import Notification, Skill, Group, Site_User, UserMessage
 from monitor.serializers import NotificationSerializer, SkillSerializer, GroupSerializer, UserSerializer, \
     SiteUserSerializer, UserMessageSerializer
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
