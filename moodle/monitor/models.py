@@ -38,6 +38,9 @@ class Skill(models.Model):
     # TODO: enums for skills and Domain Skill
     name = models.TextField(null=True, blank=True)
 
+    def __str__(self):
+        return self.name
+
 
 class UserSkill(models.Model):
     Beginner = 'BG'
@@ -72,7 +75,7 @@ class Group(models.Model):
     name = models.CharField(max_length=250, null=True, blank=True)
     group_size = models.IntegerField(null=True, blank=True)
     estimated_work_duration = models.IntegerField(null=True, blank=True)
-    skill = models.ForeignKey(Skill, on_delete=models.DO_NOTHING)
+    skill = models.ForeignKey(Skill, on_delete=models.DO_NOTHING, null=False)
     owner = models.ForeignKey('Site_User', related_name="groupings"
                               , on_delete=models.CASCADE, null=False)
 
