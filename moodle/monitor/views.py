@@ -108,12 +108,7 @@ class GroupList(generics.ListCreateAPIView):
     serializer_class = GroupSerializer
 
     def perform_create(self, serializer):
-        import ipdb;
-        ipdb.set_trace()
         serializer.save(owner=self.request.user)
-        print("------------------------")
-        print("HEREEE")
-        print("------------------------")
 
 
 class GroupDetail(generics.RetrieveAPIView):

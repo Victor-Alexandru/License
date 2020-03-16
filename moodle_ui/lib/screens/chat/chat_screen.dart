@@ -36,6 +36,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void dispose() {
     // Clean up the controller when the widget is disposed.
     _sendMessageController.dispose();
+    timer.cancel();
     super.dispose();
   }
 

@@ -6,6 +6,7 @@ import 'package:moodle_ui/data/database_helper.dart';
 import 'package:moodle_ui/models/user.dart';
 import 'package:moodle_ui/routes.dart';
 import 'package:moodle_ui/screens/home/home_page.dart';
+import 'package:moodle_ui/screens/home/selection_screen.dart';
 import 'package:moodle_ui/screens/login/login_screen_presenter.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -127,7 +128,7 @@ class LoginScreenState extends State<LoginScreen>
     setState(() => _isLoading = false);
 
     //changing the route
-    Route route = MaterialPageRoute(builder: (context) => HomePage(user));
+    Route route = MaterialPageRoute(builder: (context) => SelectionScreen(user));
     
     Navigator.pushReplacement(context, route);
 
