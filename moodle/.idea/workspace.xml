@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="94aa235e-7d5b-47bc-a992-56430812d076" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/monitor/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/monitor/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/monitor/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/monitor/views.py" afterDir="false" />
-    </list>
+    <list default="true" id="94aa235e-7d5b-47bc-a992-56430812d076" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +60,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/monitor/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="281">
+            <state relative-caret-position="383">
               <caret line="73" column="10" selection-start-line="73" selection-end-line="73" selection-end-column="10" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
@@ -252,16 +247,15 @@
       <workItem from="1583833315040" duration="3377000" />
       <workItem from="1583943023710" duration="4547000" />
       <workItem from="1584192084088" duration="949000" />
-      <workItem from="1584360241523" duration="4684000" />
+      <workItem from="1584360241523" duration="4938000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="63412000" />
+    <option name="totallyTimeSpent" value="63666000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10127932" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -473,7 +467,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/monitor/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
+        <state relative-caret-position="383">
           <caret line="73" column="10" selection-start-line="73" selection-end-line="73" selection-end-column="10" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
