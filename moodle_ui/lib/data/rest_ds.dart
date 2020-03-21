@@ -23,7 +23,6 @@ class RestDatasource {
             },
             headers: headers)
         .then((dynamic res) {
-      print("herreee");
       print("&&&&&&&&&&&&&&&&&&&&&&&");
       print(res.toString());
       print("&&&&&&&&&&&&&&&&&&&&&&&");
