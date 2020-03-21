@@ -2,31 +2,35 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:moodle_ui/utils/network_util.dart';
 import 'package:moodle_ui/models/user.dart';
+import 'package:http/http.dart' as http;
 
 class RestDatasource {
   NetworkUtil _netUtil = new NetworkUtil();
   static final LOGIN_URL = "http://192.168.1.108:8000/api/jwtauth/token/";
-  // static final _API_KEY = "somerandomkey";
 
   Future<User> login(String username, String password) {
-    Map<String, String> headers = {
-      "Accept": "application/json",
-      "content-type": "application/json"
+    Map data = {
+      'username': username,
+      'password': password,
     };
 
-    return _netUtil
+    String body = json.encode(data);
+
+    return http
         .post(LOGIN_URL,
-            body: {
-              // "token": _API_KEY,
-              "username": username,
-              "password": password
-            },
-            headers: headers)
-        .then((dynamic res) {
-      print("&&&&&&&&&&&&&&&&&&&&&&&");
-      print(res.toString());
-      print("&&&&&&&&&&&&&&&&&&&&&&&");
-      return new User.map(res["user"]);
+            headers: {"Content-Type": "application/json"}, body: body)
+        .then((dynamic response) {
+      Map responseBody = json.decode(response.body);
+      print("-----------------------");
+      print(response.body);
+      print(responseBody["detail"]);
+      print("-----------------------");
+
+      if (responseBody.containsKey("detail")) {
+        throw new Exception(responseBody["detail"]);
+      }
+
+      return new User.map(response["user"]);
     });
   }
 }
