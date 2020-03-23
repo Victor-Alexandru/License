@@ -1,28 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:moodle_ui/models/group.dart';
+import 'package:moodle_ui/models/token.dart';
 import 'package:moodle_ui/models/user.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 
 class GroupScreen extends StatefulWidget {
   User _currentUser;
+  Token _token;
 
-  GroupScreen(User user) {
-    this._currentUser = user;
+  GroupScreen(Token token) {
+    this._token = token;
   }
 
   @override
-  _GroupScreenState createState() => _GroupScreenState(this._currentUser);
+  _GroupScreenState createState() => _GroupScreenState(this._token);
 }
 
 class _GroupScreenState extends State<GroupScreen> {
   // Position _currentPosition;
-  User _currentUser;
   var _associateGroups = new List<Group>();
+  Token _token;
 
-  _GroupScreenState(User user) {
-    this._currentUser = user;
+  _GroupScreenState(Token token) {
+    this._token = token;
   }
 
-  
+  @override
+  void initState() {
+    super.initState();
+    this._getGroups();
+  }
+
   Widget GroupCell(BuildContext ctx, int index) {
     return GestureDetector(
       onTap: () {
@@ -64,7 +74,7 @@ class _GroupScreenState extends State<GroupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Find Nearby Users"),
+        title: Text("Your Groups"),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.list),
@@ -85,4 +95,24 @@ class _GroupScreenState extends State<GroupScreen> {
     );
   }
 
+  _getGroups() {
+    var _getYourGroupsUrlEnpoint =
+        Uri.http('192.168.1.108:8000', 'monitor/groups/', {});
+    String token = this._token.access;
+
+    http.get(_getYourGroupsUrlEnpoint, headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    }).then((response) {
+      print(response.body);
+      setState(() {
+        Iterable list = json.decode(response.body);
+        _associateGroups =
+            list.map((model) => Group.fromJson(model)).toList();
+        print(_associateGroups);
+      });
+    });
+
+  }
 }

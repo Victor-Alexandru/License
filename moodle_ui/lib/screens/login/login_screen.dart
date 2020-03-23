@@ -1,8 +1,7 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:moodle_ui/auth.dart';
-import 'package:moodle_ui/data/database_helper.dart';
+import 'package:moodle_ui/models/token.dart';
 import 'package:moodle_ui/models/user.dart';
 import 'package:moodle_ui/routes.dart';
 import 'package:moodle_ui/screens/home/home_page.dart';
@@ -123,13 +122,14 @@ class LoginScreenState extends State<LoginScreen>
   }
 
   @override
-  void onLoginSuccess(User user) async {
-    _showSnackBar(user.toString());
+  void onLoginSuccess(Token token) async {
+    _showSnackBar(token.access);
     setState(() => _isLoading = false);
 
     //changing the route
-    Route route = MaterialPageRoute(builder: (context) => SelectionScreen(user));
-    
+    Route route =
+        MaterialPageRoute(builder: (context) => SelectionScreen(token));
+
     Navigator.pushReplacement(context, route);
 
     // Navigator.of(_ctx).pushReplacementNamed("/home");

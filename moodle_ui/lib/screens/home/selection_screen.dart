@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:moodle_ui/models/token.dart';
 import 'package:moodle_ui/models/user.dart';
 import 'package:moodle_ui/screens/home/group_screen.dart';
 import 'package:moodle_ui/screens/home/home_page.dart';
 
 class SelectionScreen extends StatelessWidget {
   // This widget is the root of your application.
-  User user;
+  Token token;
 
-  SelectionScreen(User user) {
-    this.user = user;
+  SelectionScreen(Token token) {
+    this.token = token;
   }
 
   @override
@@ -25,7 +26,7 @@ class SelectionScreen extends StatelessWidget {
             FlatButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomePage(user)));
+                    MaterialPageRoute(builder: (context) => HomePage(token)));
               },
               child: Text(
                 "Find Users Nearby",
@@ -36,7 +37,7 @@ class SelectionScreen extends StatelessWidget {
             FlatButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => GroupScreen(user)));
+                    MaterialPageRoute(builder: (context) => GroupScreen(token)));
               },
               child: Text(
                 "See your Gropus",

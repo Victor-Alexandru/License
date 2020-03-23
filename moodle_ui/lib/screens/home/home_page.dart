@@ -1,40 +1,32 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
 import 'package:geocoder/geocoder.dart';
 import 'package:moodle_ui/models/site-user.dart';
-import 'package:moodle_ui/models/user.dart';
+import 'package:moodle_ui/models/token.dart';
 import 'package:moodle_ui/screens/chat/chat_screen.dart';
 
 class HomePage extends StatefulWidget {
-  User _currentUser;
+  Token _token;
 
-  HomePage(User user) {
-    this._currentUser = user;
+  HomePage(Token token) {
+    this._token = token;
   }
 
   @override
-  _HomePageState createState() => _HomePageState(this._currentUser);
+  _HomePageState createState() => _HomePageState(this._token);
 }
 
 class _HomePageState extends State<HomePage> {
   // Position _currentPosition;
-  String _currentUserId = '1';
-  String _currentAddress;
-  User _currentUser;
-  String _apiPutUrl;
+  Token _token;
   var _nearbySiteUsers = new List<SiteUser>();
 
-  _HomePageState(User user) {
-    this._currentUser = user;
-    _apiPutUrl =
-        'http://192.168.1.108:8000/monitor/users/' + user.id.toString() + '/';
+  _HomePageState(Token token) {
+    this._token = token;
   }
 
-  String _apiUsersUrl = 'http://192.168.1.108:8000/monitor/users';
 
   Widget SiteUserCell(BuildContext ctx, int index) {
     return GestureDetector(
@@ -44,7 +36,7 @@ class _HomePageState extends State<HomePage> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    ChatScreen(_currentUser, _nearbySiteUsers[index])));
+                    ChatScreen(_token, _nearbySiteUsers[index])));
       },
       child: Card(
           margin: EdgeInsets.all(8),
@@ -143,12 +135,6 @@ class _HomePageState extends State<HomePage> {
     return preciseLocality;
   }
 
-  _getUsers() {
-    http.get(_apiUsersUrl).then((response) {
-      print(response.body);
-    });
-  }
-
   _getNearbyUsers() async {
     var preciseLocality = await this._getCurrentLocation();
     Map<String, String> queryParameters = {
@@ -157,9 +143,14 @@ class _HomePageState extends State<HomePage> {
 
     var _getNearbtUsersUrlEnpoint =
         Uri.http('192.168.1.108:8000', 'monitor/site-users/', queryParameters);
+    String token = this._token.access;
 
-    http.get(_getNearbtUsersUrlEnpoint).then((response) {
-      // print(response.body);
+    http.get(_getNearbtUsersUrlEnpoint, headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    }).then((response) {
+      print(response.body);
       setState(() {
         Iterable list = json.decode(response.body);
         _nearbySiteUsers =

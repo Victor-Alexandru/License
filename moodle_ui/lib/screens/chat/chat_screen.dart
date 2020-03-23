@@ -3,32 +3,34 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:moodle_ui/models/site-user.dart';
+import 'package:moodle_ui/models/token.dart';
 import 'package:moodle_ui/models/user-message.dart';
 import 'package:moodle_ui/models/user.dart';
 import 'package:http/http.dart' as http;
 
 class ChatScreen extends StatefulWidget {
-  User _currentUser;
   SiteUser _nearbyUser;
+  Token _token;
 
-  ChatScreen(User cUser, SiteUser nUser) {
-    this._currentUser = cUser;
+  ChatScreen(Token token, SiteUser nUser) {
+    this._token = token;
     this._nearbyUser = nUser;
   }
 
   @override
-  _ChatScreenState createState() => _ChatScreenState(_currentUser, _nearbyUser);
+  _ChatScreenState createState() => _ChatScreenState(_token, _nearbyUser);
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  User _currentUser;
+  Token _token;
   SiteUser _nearbyUser;
+  User _currentUser;
   List<UserMessage> _messages = new List();
   final _sendMessageController = TextEditingController();
   Timer timer;
 
-  _ChatScreenState(User cUser, SiteUser nUser) {
-    this._currentUser = cUser;
+  _ChatScreenState(Token token, SiteUser nUser) {
+    this._token = token;
     this._nearbyUser = nUser;
   }
 
@@ -143,20 +145,23 @@ class _ChatScreenState extends State<ChatScreen> {
               print(_sendMessageController.text);
               Map data = {
                 'text': _sendMessageController.text,
-                'owner': _currentUser.id.toString(),
                 'to_user_msg': _nearbyUser.id.toString()
               };
 
               String body = json.encode(data);
-
+              String token = this._token.access;
               await http
                   .post(
                 'http://192.168.1.108:8000/monitor/user-messages/',
-                headers: {"Content-Type": "application/json"},
+                headers: {
+                  "Content-Type": "application/json",
+                  'Authorization': 'Bearer $token'
+                },
                 body: body,
               )
                   .then((response) {
                 if (response.statusCode == 201) {
+                  _sendMessageController.clear();
                   _getMessages();
                 }
               });
@@ -169,17 +174,21 @@ class _ChatScreenState extends State<ChatScreen> {
 
   _getMessages() async {
     Map<String, String> queryParameters = {
-      'first_user_id': _currentUser.id.toString(),
       'second_user_id': _nearbyUser.id.toString(),
     };
     var _getUsersMessagesUrlEnpoint = Uri.http(
         '192.168.1.108:8000', 'monitor/user-messages/', queryParameters);
+    String token = this._token.access;
 
-    http.get(_getUsersMessagesUrlEnpoint).then((response) {
-      print("--------------------------");
-      print("Requesting messages ");
+    http.get(_getUsersMessagesUrlEnpoint, headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    }).then((response) {
       print("--------------------------");
       print(response.body);
+      print("--------------------------");
+
       setState(() {
         Iterable list = json.decode(response.body);
         _messages = list.map((model) => UserMessage.fromJson(model)).toList();

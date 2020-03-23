@@ -1,6 +1,4 @@
-import 'package:moodle_ui/data/database_helper.dart';
-
-enum AuthState{ LOGGED_IN, LOGGED_OUT }
+enum AuthState { LOGGED_IN, LOGGED_OUT }
 
 abstract class AuthStateListener {
   void onAuthStateChanged(AuthState state);
@@ -32,9 +30,8 @@ class AuthStateProvider {
   }
 
   void dispose(AuthStateListener listener) {
-    for(var l in _subscribers) {
-      if(l == listener)
-         _subscribers.remove(l);
+    for (var l in _subscribers) {
+      if (l == listener) _subscribers.remove(l);
     }
   }
 

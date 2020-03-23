@@ -16,7 +16,9 @@ class Group {
   String get name => _name;
 
   int get id => _id;
+
   int get groupSize => _groupSize;
+
   int get estimatedWorkDuration => _estimatedWorkDuration;
 
   Map<String, dynamic> toMap() {
@@ -28,6 +30,12 @@ class Group {
 
     return map;
   }
+
+  Group.fromJson(Map json)
+      : _id = json['id'],
+        _name = json['name'],
+        _groupSize = json['group_size'],
+        _estimatedWorkDuration = json['estimated_work_duration'];
 
   @override
   String toString() {
