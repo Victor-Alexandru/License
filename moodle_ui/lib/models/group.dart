@@ -1,8 +1,13 @@
+import 'dart:convert';
+
+import 'package:moodle_ui/models/skill.dart';
+
 class Group {
   String _name;
   int _groupSize;
   int _estimatedWorkDuration;
   int _id;
+  Skill _skill;
 
   Group(this._name, this._groupSize, this._estimatedWorkDuration);
 
@@ -21,6 +26,8 @@ class Group {
 
   int get estimatedWorkDuration => _estimatedWorkDuration;
 
+  Skill get skill => _skill;
+
   Map<String, dynamic> toMap() {
     var map = new Map<String, dynamic>();
     map["name"] = _name;
@@ -31,11 +38,12 @@ class Group {
     return map;
   }
 
-  Group.fromJson(Map json)
-      : _id = json['id'],
-        _name = json['name'],
-        _groupSize = json['group_size'],
-        _estimatedWorkDuration = json['estimated_work_duration'];
+  Group.fromJson(Map jsonDict)
+      : _id = jsonDict['id'],
+        _name = jsonDict['name'],
+        _groupSize = jsonDict['group_size'],
+        _estimatedWorkDuration = jsonDict['estimated_work_duration'],
+        _skill = Skill.fromJson(jsonDict["skill"]);
 
   @override
   String toString() {

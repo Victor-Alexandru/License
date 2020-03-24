@@ -5,7 +5,6 @@ import 'package:moodle_ui/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-
 class GroupScreen extends StatefulWidget {
   User _currentUser;
   Token _token;
@@ -37,6 +36,7 @@ class _GroupScreenState extends State<GroupScreen> {
     return GestureDetector(
       onTap: () {
         print("Tap on " + _associateGroups[index].name);
+        print("Tap on " + _associateGroups[index].skill.name);
         // Navigator.push(
         //     context,
         //     MaterialPageRoute(
@@ -58,6 +58,11 @@ class _GroupScreenState extends State<GroupScreen> {
                     ),
                     Text(
                       _associateGroups[index].name,
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      " (" + _associateGroups[index].skill.name + ")",
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
@@ -108,11 +113,9 @@ class _GroupScreenState extends State<GroupScreen> {
       print(response.body);
       setState(() {
         Iterable list = json.decode(response.body);
-        _associateGroups =
-            list.map((model) => Group.fromJson(model)).toList();
+        _associateGroups = list.map((model) => Group.fromJson(model)).toList();
         print(_associateGroups);
       });
     });
-
   }
 }
