@@ -4,6 +4,7 @@ import 'package:moodle_ui/models/token.dart';
 import 'package:moodle_ui/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:moodle_ui/screens/group/detail.dart';
 
 class GroupScreen extends StatefulWidget {
   User _currentUser;
@@ -35,13 +36,11 @@ class _GroupScreenState extends State<GroupScreen> {
   Widget GroupCell(BuildContext ctx, int index) {
     return GestureDetector(
       onTap: () {
-        print("Tap on " + _associateGroups[index].name);
-        print("Tap on " + _associateGroups[index].skill.name);
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (context) =>
-        //             ChatScreen(_currentUser, _nearbySiteUsers[index])));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    GroupDetailView(_associateGroups[index],_token)));
       },
       child: Card(
           margin: EdgeInsets.all(8),

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:moodle_ui/models/skill.dart';
 
 class Group {
