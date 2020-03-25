@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moodle_ui/models/token.dart';
-import 'package:moodle_ui/models/user.dart';
+import 'package:moodle_ui/screens/firebase/firebase_screen.dart';
 import 'package:moodle_ui/screens/home/group_screen.dart';
 import 'package:moodle_ui/screens/home/home_page.dart';
 
@@ -32,18 +32,31 @@ class SelectionScreen extends StatelessWidget {
                 "Find Users Nearby",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
               ),
-              color: Colors.blue,
+              color: Colors.lightBlueAccent,
             ),
             FlatButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => GroupScreen(token)));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => GroupScreen(token)));
               },
               child: Text(
                 "See your Gropus",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
               ),
-              color: Colors.blue,
+              color: Colors.lightBlueAccent,
+            ),
+            FlatButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => FirebaseScreen()));
+              },
+              child: Text(
+                "Firebase test",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+              ),
+              color: Colors.lightBlueAccent,
             )
           ],
         ),
