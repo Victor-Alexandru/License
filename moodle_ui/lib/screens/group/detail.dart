@@ -4,6 +4,8 @@ import 'package:moodle_ui/models/group-notification.dart';
 import 'package:moodle_ui/models/group.dart';
 import 'package:http/http.dart' as http;
 import 'package:moodle_ui/models/token.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class GroupDetailView extends StatefulWidget {
   Group _currentGroup;
@@ -168,7 +170,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                 'Send Notification',
                 style: TextStyle(color: Colors.black45, fontSize: 16),
               ),
-              onPressed: () async  {
+              onPressed: () async {
                 if (!_formKey.currentState.validate()) {
                   return;
                 }
@@ -188,6 +190,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                 };
                 String body = json.encode(data);
                 String token = this._token.access;
+
                 await http
                     .post(
                   'http://192.168.1.108:8000/monitor/group-notifications/',
@@ -199,10 +202,16 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                 )
                     .then((response) {
                   if (response.statusCode == 201) {
+                    Firestore.instance.runTransaction((transaction) async {
+                      await transaction.set(
+                          Firestore.instance.collection("Messages").document(),
+                          {
+                            'message': _messageText,
+                          });
+                    });
                     print("post cu succes");
                   }
                 });
-
 
                 // finishing the post request
 
