@@ -27,16 +27,10 @@ class _HomePageState extends State<HomePage> {
     this._token = token;
   }
 
-
   Widget SiteUserCell(BuildContext ctx, int index) {
     return GestureDetector(
       onTap: () {
         print("Tap on " + _nearbySiteUsers[index].firstName);
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    ChatScreen(_token, _nearbySiteUsers[index])));
       },
       child: Card(
           margin: EdgeInsets.all(8),
@@ -58,7 +52,19 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-                Icon(Icons.chat, color: Colors.blue),
+                IconButton(
+                  icon: new Icon(Icons.supervised_user_circle,
+                      color: Colors.blue),
+                ),
+                IconButton(
+                    icon: new Icon(Icons.chat, color: Colors.blue),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ChatScreen(_token, _nearbySiteUsers[index])));
+                    }),
               ],
             ),
           )),
