@@ -1,7 +1,9 @@
 class User {
   String _username;
   String _password;
+  String _email;
   int _id;
+
   User(this._username, this._password);
 
   User.map(dynamic obj) {
@@ -11,7 +13,10 @@ class User {
   }
 
   String get username => _username;
+
   String get password => _password;
+
+  String get email => _email;
 
   int get id => _id;
 
@@ -23,6 +28,11 @@ class User {
 
     return map;
   }
+
+  User.fromJson(Map jsonDict)
+      : _id = jsonDict['id'],
+        _username = jsonDict['username'],
+        _email = jsonDict['email'];
 
   @override
   String toString() {

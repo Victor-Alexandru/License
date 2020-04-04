@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:moodle_ui/models/site-user.dart';
 import 'package:moodle_ui/models/token.dart';
 import 'package:moodle_ui/models/user-message.dart';
-import 'package:moodle_ui/models/user.dart';
 import 'package:http/http.dart' as http;
 
 class ChatScreen extends StatefulWidget {
@@ -24,7 +23,6 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   Token _token;
   SiteUser _nearbyUser;
-  User _currentUser;
   List<UserMessage> _messages = new List();
   final _sendMessageController = TextEditingController();
   Timer timer;

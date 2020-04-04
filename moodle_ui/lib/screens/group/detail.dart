@@ -77,7 +77,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                 width: 16,
               ),
               Text(
-                "Notifications Tab",
+                "Group Notification ",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ],

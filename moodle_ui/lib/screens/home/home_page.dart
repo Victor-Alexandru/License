@@ -6,6 +6,7 @@ import 'package:geocoder/geocoder.dart';
 import 'package:moodle_ui/models/site-user.dart';
 import 'package:moodle_ui/models/token.dart';
 import 'package:moodle_ui/screens/chat/chat_screen.dart';
+import 'package:moodle_ui/screens/user/user_detail_screen.dart';
 
 class HomePage extends StatefulWidget {
   Token _token;
@@ -53,9 +54,15 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 IconButton(
-                  icon: new Icon(Icons.supervised_user_circle,
-                      color: Colors.blue),
-                ),
+                    icon: new Icon(Icons.supervised_user_circle,
+                        color: Colors.blue),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  UserDetailView(_token, _nearbySiteUsers[index])));
+                    }),
                 IconButton(
                     icon: new Icon(Icons.chat, color: Colors.blue),
                     onPressed: () {
