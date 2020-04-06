@@ -245,7 +245,9 @@ class _UserProfileViewState extends State<UserProfileView> {
                 _currentRequestToGroups[index].status == "PG"
                     ? IconButton(
                         icon: new Icon(Icons.close, color: Colors.blue),
-                        onPressed: () {})
+                        onPressed: () {
+                          _changeStatus('CL', _currentRequestToGroups[index]);
+                        })
                     : Container(),
                 _currentRequestToGroups[index].status == "PG"
                     ? IconButton(
@@ -253,6 +255,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                         onPressed: () {
                           //put request to change status to acc or close
                           //if put successfull then setState status to accordingly
+                          _changeStatus('AC', _currentRequestToGroups[index]);
                         })
                     : Container()
               ],
@@ -273,7 +276,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                 width: 16,
               ),
               Text(
-                " Requests to your groups  ",
+                " Pending requests to your groups  ",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ],
@@ -349,7 +352,32 @@ class _UserProfileViewState extends State<UserProfileView> {
     });
   }
 
-  _changeStatus(status, RequestToGroup requestToGroup) {
-    
+  _changeStatus(String status, RequestToGroup requestToGroup) async {
+    String patchJson = '{"status":"' + status + '"}';
+    String token = this._token.access;
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    try {
+      http.Response response = await http.patch(
+          'http://192.168.1.108:8000/monitor/request-groups/' +
+              requestToGroup.id.toString() +
+              '/',
+          headers: headers,
+          body: patchJson);
+      print(response);
+      if (response.statusCode == 200) {
+        setState(() {
+          requestToGroup.status = status;
+        });
+      } else {
+        print("put not success");
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }

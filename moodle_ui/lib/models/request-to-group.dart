@@ -11,6 +11,10 @@ class RequestToGroup {
 
   String get status => _status;
 
+  void set status(String status) {
+    _status = status;
+  }
+
   int get id => _id;
 
   int get requestTo => _requestTo;

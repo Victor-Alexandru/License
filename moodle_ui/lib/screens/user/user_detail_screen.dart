@@ -161,7 +161,10 @@ class _UserDetailViewState extends State<UserDetailView> {
                 ),
                 IconButton(
                     icon: new Icon(Icons.send, color: Colors.blue),
-                    onPressed: () {}),
+                    onPressed: () {
+                      ///make post to create a request to group
+                      _postReqToCreateRequestToGroup(_ownerGroups[index]);
+                    }),
                 utils.isUserInGroupFromUsersGroupList(
                         _currentUserUserGroups, _ownerGroups[index])
                     ? Icon(Icons.check, color: Colors.blue)
@@ -238,6 +241,32 @@ class _UserDetailViewState extends State<UserDetailView> {
             list.map((model) => UserGroup.fromJson(model)).toList();
         print(_currentUserUserGroups);
       });
+    });
+  }
+
+  _postReqToCreateRequestToGroup(Group g) async {
+    Map data = {
+      'status': 'PG',
+      'request_to': _nearbyUser.id.toString(),
+      'group_id': g.id,
+    };
+    String body = json.encode(data);
+    String token = this._token.access;
+
+    print(body);
+    await http
+        .post(
+      'http://192.168.1.108:8000/monitor/request-groups/',
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $token'
+      },
+      body: body,
+    )
+        .then((response) {
+      if (response.statusCode == 201) {
+        print("REQUEST to group creat cu success");
+      }
     });
   }
 }
