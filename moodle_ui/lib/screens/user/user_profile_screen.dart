@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:moodle_ui/models/group.dart';
+import 'package:moodle_ui/models/request-to-group.dart';
 import 'package:moodle_ui/models/site-user.dart';
 import 'package:moodle_ui/models/token.dart';
 import 'package:http/http.dart' as http;
@@ -26,12 +27,14 @@ class _UserProfileViewState extends State<UserProfileView> {
   PageController _pageController;
   var _ownerGroups = new List<Group>();
   var _currentUserUserGroups = new List<UserGroup>();
+  var _currentRequestToGroups = new List<RequestToGroup>();
 
   @override
   void initState() {
     super.initState();
     this._getGroups();
     this._getUserGroups();
+    this._getRequestGroups();
     _pageController = PageController();
   }
 
@@ -67,7 +70,7 @@ class _UserProfileViewState extends State<UserProfileView> {
       home: Scaffold(
         body: PageView(
           controller: _pageController,
-          children: [ProfilePage(), OwnerGroupProfilePage()],
+          children: [ProfilePage(), OwnerGroupProfilePage(), RequestsPage()],
         ),
       ),
     );
@@ -213,6 +216,77 @@ class _UserProfileViewState extends State<UserProfileView> {
     );
   }
 
+  Widget RequestCell(BuildContext ctx, int index) {
+    return GestureDetector(
+      onTap: () {},
+      child: Card(
+          color: _currentRequestToGroups[index].status == "PG"
+              ? Colors.green
+              : Colors.red,
+          margin: EdgeInsets.all(8),
+          elevation: 4.0,
+          child: Container(
+            padding: EdgeInsets.all(8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    SizedBox(
+                      width: 16,
+                    ),
+                    Text(
+                      _currentRequestToGroups[index].requestFrom.username,
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                _currentRequestToGroups[index].status == "PG"
+                    ? IconButton(
+                        icon: new Icon(Icons.close, color: Colors.blue),
+                        onPressed: () {})
+                    : Container(),
+                _currentRequestToGroups[index].status == "PG"
+                    ? IconButton(
+                        icon: new Icon(Icons.check, color: Colors.blue),
+                        onPressed: () {
+                          //put request to change status to acc or close
+                          //if put successfull then setState status to accordingly
+                        })
+                    : Container()
+              ],
+            ),
+          )),
+    );
+  }
+
+  Widget RequestsPage() {
+    return Container(
+      color: Colors.white,
+      padding: EdgeInsets.all(16.0),
+      child: Center(
+        child: Stack(children: <Widget>[
+          Row(
+            children: <Widget>[
+              SizedBox(
+                width: 16,
+              ),
+              Text(
+                " Requests to your groups  ",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          ListView.builder(
+            itemCount: _currentRequestToGroups.length,
+            itemBuilder: (context, index) => RequestCell(context, index),
+          ),
+        ]),
+      ),
+    );
+  }
+
   _getGroups() async {
     await this._setSiteUser();
 
@@ -233,7 +307,6 @@ class _UserProfileViewState extends State<UserProfileView> {
       setState(() {
         Iterable list = json.decode(response.body);
         _ownerGroups = list.map((model) => Group.fromJson(model)).toList();
-        print(_ownerGroups);
       });
     });
   }
@@ -253,10 +326,30 @@ class _UserProfileViewState extends State<UserProfileView> {
         Iterable list = json.decode(response.body);
         _currentUserUserGroups =
             list.map((model) => UserGroup.fromJson(model)).toList();
-        print(_currentUserUserGroups);
       });
     });
   }
 
-  _getRequestGroups() {}
+  _getRequestGroups() {
+    var _getYourGroupsUrlEnpoint =
+        Uri.http('192.168.1.108:8000', 'monitor/request-groups/', {});
+    String token = this._token.access;
+
+    http.get(_getYourGroupsUrlEnpoint, headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    }).then((response) {
+      setState(() {
+        print(response.body);
+        Iterable list = json.decode(response.body);
+        _currentRequestToGroups =
+            list.map((model) => RequestToGroup.fromJson(model)).toList();
+      });
+    });
+  }
+
+  _changeStatus(status, RequestToGroup requestToGroup) {
+    
+  }
 }

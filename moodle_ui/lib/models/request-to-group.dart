@@ -1,12 +1,11 @@
 import 'package:moodle_ui/models/group.dart';
-import 'package:moodle_ui/models/site-user.dart';
 import 'package:moodle_ui/models/user.dart';
 
 class RequestToGroup {
   int _id;
   int _requestTo;
   String _status;
-  SiteUser _requestFrom;
+  User _requestFrom;
 
   Group _group;
 
@@ -16,7 +15,7 @@ class RequestToGroup {
 
   int get requestTo => _requestTo;
 
-  SiteUser get requestFrom => _requestFrom;
+  User get requestFrom => _requestFrom;
 
   Group get group => _group;
 
@@ -24,6 +23,6 @@ class RequestToGroup {
       : _id = jsonDict['id'],
         _requestTo = jsonDict['request_to'],
         _status = jsonDict['status'],
-        _requestFrom = SiteUser.fromJson(jsonDict["request_from"]),
+        _requestFrom = User.fromJson(jsonDict["request_from"]),
         _group = Group.fromJson(jsonDict["group"]);
 }
