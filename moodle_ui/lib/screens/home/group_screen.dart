@@ -5,26 +5,26 @@ import 'package:moodle_ui/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:moodle_ui/screens/group/detail.dart';
+import 'package:moodle_ui/service/WebService.dart';
 
 class GroupScreen extends StatefulWidget {
-  User _currentUser;
-  Token _token;
+  Webservice _webservice;
 
-  GroupScreen(Token token) {
-    this._token = token;
+  GroupScreen(Webservice ws) {
+    this._webservice = ws;
   }
 
   @override
-  _GroupScreenState createState() => _GroupScreenState(this._token);
+  _GroupScreenState createState() => _GroupScreenState(this._webservice);
 }
 
 class _GroupScreenState extends State<GroupScreen> {
   // Position _currentPosition;
   var _associateGroups = new List<Group>();
-  Token _token;
+  Webservice _webservice;
 
-  _GroupScreenState(Token token) {
-    this._token = token;
+  _GroupScreenState(Webservice ws) {
+    this._webservice = ws;
   }
 
   @override
@@ -35,43 +35,14 @@ class _GroupScreenState extends State<GroupScreen> {
 
   Widget GroupCell(BuildContext ctx, int index) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    GroupDetailView(_associateGroups[index],_token)));
-      },
-      child: Card(
-          margin: EdgeInsets.all(8),
-          elevation: 4.0,
-          child: Container(
-            padding: EdgeInsets.all(16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Text(
-                      _associateGroups[index].name,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      " (" + _associateGroups[index].skill.name + ")",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                Icon(Icons.group, color: Colors.blue),
-              ],
-            ),
-          )),
-    );
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      GroupDetailView(_associateGroups[index], _webservice)));
+        },
+        child: _associateGroups[index].GroupCardView());
   }
 
   @override
@@ -83,7 +54,7 @@ class _GroupScreenState extends State<GroupScreen> {
           IconButton(
             icon: Icon(Icons.list),
             onPressed: () {
-              // _getNearbyUsers();
+              _getGroups();
             },
           ),
         ],
@@ -100,20 +71,9 @@ class _GroupScreenState extends State<GroupScreen> {
   }
 
   _getGroups() {
-    var _getYourGroupsUrlEnpoint =
-        Uri.http('192.168.1.108:8000', 'monitor/groups/', {});
-    String token = this._token.access;
-
-    http.get(_getYourGroupsUrlEnpoint, headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    }).then((response) {
-      print(response.body);
+    _webservice.fetchGroups().then((groupList) {
       setState(() {
-        Iterable list = json.decode(response.body);
-        _associateGroups = list.map((model) => Group.fromJson(model)).toList();
-        print(_associateGroups);
+        _associateGroups = groupList;
       });
     });
   }

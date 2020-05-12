@@ -4,13 +4,16 @@ import 'package:moodle_ui/screens/firebase/firebase_screen.dart';
 import 'package:moodle_ui/screens/home/group_screen.dart';
 import 'package:moodle_ui/screens/home/home_page.dart';
 import 'package:moodle_ui/screens/user/user_profile_screen.dart';
+import 'package:moodle_ui/service/WebService.dart';
 
 class SelectionScreen extends StatelessWidget {
   // This widget is the root of your application.
   Token token;
+  Webservice _webservice;
 
   SelectionScreen(Token token) {
     this.token = token;
+    _webservice = new Webservice(token);
   }
 
   @override
@@ -40,7 +43,7 @@ class SelectionScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => GroupScreen(token)));
+                        builder: (context) => GroupScreen(_webservice)));
               },
               child: Text(
                 "See your Gropus",
@@ -61,8 +64,10 @@ class SelectionScreen extends StatelessWidget {
             ),
             FlatButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => UserProfileView(this.token)));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UserProfileView(this.token)));
               },
               child: Text(
                 "Your profile",

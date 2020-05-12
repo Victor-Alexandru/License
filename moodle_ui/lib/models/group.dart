@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:moodle_ui/models/skill.dart';
 
 class Group {
@@ -51,5 +52,35 @@ class Group {
         this._name +
         "   " +
         this._groupSize.toString();
+  }
+
+  Widget GroupCardView() {
+    return Card(
+        margin: EdgeInsets.all(8),
+        elevation: 4.0,
+        child: Container(
+          padding: EdgeInsets.all(16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  SizedBox(
+                    width: 16,
+                  ),
+                  Text(
+                    this.name,
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    " (" + this.skill.name + ")",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              Icon(Icons.group, color: Colors.blue),
+            ],
+          ),
+        ));
   }
 }

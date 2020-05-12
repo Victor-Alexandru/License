@@ -6,34 +6,35 @@ import 'package:http/http.dart' as http;
 import 'package:moodle_ui/models/token.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:moodle_ui/service/WebService.dart';
 
 class GroupDetailView extends StatefulWidget {
   Group _currentGroup;
-  Token _token;
+  Webservice _webservice;
 
-  GroupDetailView(Group group, Token token) {
+  GroupDetailView(Group group, Webservice ws) {
     this._currentGroup = group;
-    this._token = token;
+    this._webservice = ws;
   }
 
   _GroupDetailViewState createState() =>
-      _GroupDetailViewState(_currentGroup, _token);
+      _GroupDetailViewState(_currentGroup, _webservice);
 }
 
 class _GroupDetailViewState extends State<GroupDetailView> {
   PageController _pageController;
   Group _currentGroup;
   List _groupNotifications = new List<GroupNotification>();
-  Token _token;
+  Webservice _webservice;
   String _messageText;
   String _colorText;
   String _prioriyText;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  _GroupDetailViewState(Group group, Token token) {
+  _GroupDetailViewState(Group group, Webservice ws) {
     this._currentGroup = group;
-    this._token = token;
+    this._webservice = ws;
   }
 
   @override
@@ -94,48 +95,15 @@ class _GroupDetailViewState extends State<GroupDetailView> {
 
   Widget GroupNotificationCell(BuildContext ctx, int index) {
     return GestureDetector(
-        child: Card(
-            margin: EdgeInsets.all(8),
-            elevation: 4.0,
-            child: Container(
-              padding: EdgeInsets.all(16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      SizedBox(
-                        width: 16,
-                      ),
-                      Text(
-                        _groupNotifications[index].message,
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  Icon(Icons.notifications, color: Colors.deepOrange),
-                ],
-              ),
-            )));
+        child: _groupNotifications[index].GroupNotificationCard());
   }
 
   _getGroupNotifications() {
-    var _getYourGroupsUrlEnpoint = Uri.http(
-        '192.168.1.108:8000',
-        'monitor/group-notifications/',
-        {"group_id": this._currentGroup.id.toString()});
-
-    http.get(_getYourGroupsUrlEnpoint, headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    }).then((response) {
-      print(response.body);
+    _webservice
+        .fetchGroupNotifications(this._currentGroup)
+        .then((groupNotifications) {
       setState(() {
-        Iterable list = json.decode(response.body);
-        _groupNotifications =
-            list.map((model) => GroupNotification.fromJson(model)).toList();
-        print(_groupNotifications.toString());
+        _groupNotifications = groupNotifications;
       });
     });
   }
@@ -189,7 +157,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                   'group': _currentGroup.id,
                 };
                 String body = json.encode(data);
-                String token = this._token.access;
+                String token = this._webservice.token.access;
 
                 await http
                     .post(

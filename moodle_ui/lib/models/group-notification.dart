@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
 class GroupNotification {
   int _id;
   String _message;
@@ -20,5 +23,32 @@ class GroupNotification {
   String toString() {
     // TODO: implement toString
     return this._message;
+  }
+
+  Widget GroupNotificationCard(){
+    return Card(
+        margin: EdgeInsets.all(8),
+        elevation: 4.0,
+        child: Container(
+          padding: EdgeInsets.all(16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  SizedBox(
+                    width: 16,
+                  ),
+                  Text(
+                    this.message,
+                    style: TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              Icon(Icons.notifications, color: Colors.deepOrange),
+            ],
+          ),
+        ));
   }
 }
