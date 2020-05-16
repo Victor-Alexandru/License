@@ -6,28 +6,34 @@ import 'package:moodle_ui/models/site-user.dart';
 import 'package:moodle_ui/models/token.dart';
 import 'package:http/http.dart' as http;
 import 'package:moodle_ui/models/user-group.dart';
+import 'package:moodle_ui/service/WebService.dart';
 import 'package:moodle_ui/utils/functions.dart' as utils;
 
 class UserProfileView extends StatefulWidget {
   SiteUser _currentUser;
-  Token _token;
+  Webservice _webservice;
 
-  UserProfileView(Token token) {
-    this._token = token;
+  UserProfileView(Webservice ws) {
+    this._webservice = ws;
   }
 
   @override
   _UserProfileViewState createState() =>
-      _UserProfileViewState(_token, _currentUser);
+      _UserProfileViewState(_webservice, _currentUser);
 }
 
 class _UserProfileViewState extends State<UserProfileView> {
-  Token _token;
+  Webservice _webservice;
   SiteUser _currentUser;
   PageController _pageController;
   var _ownerGroups = new List<Group>();
   var _currentUserUserGroups = new List<UserGroup>();
   var _currentRequestToGroups = new List<RequestToGroup>();
+
+  _UserProfileViewState(Webservice ws, SiteUser nUser) {
+    this._webservice = ws;
+    this._currentUser = nUser;
+  }
 
   @override
   void initState() {
@@ -39,28 +45,13 @@ class _UserProfileViewState extends State<UserProfileView> {
   }
 
   _setSiteUser() async {
-    var _getSiteUrlEnpoint =
-        Uri.http('192.168.1.108:8000', 'monitor/token-site-user/', {});
-    String token = this._token.access;
-
-    await http.get(_getSiteUrlEnpoint, headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    }).then((response) {
-      this._currentUser = SiteUser.fromJson(json.decode(response.body));
-    });
+    this._currentUser = await this._webservice.fetchSiteUserBasedOnToken();
   }
 
   @override
   void dispose() {
     _pageController.dispose();
     super.dispose();
-  }
-
-  _UserProfileViewState(Token token, SiteUser nUser) {
-    this._token = token;
-    this._currentUser = nUser;
   }
 
   @override
@@ -293,68 +284,34 @@ class _UserProfileViewState extends State<UserProfileView> {
   _getGroups() async {
     await this._setSiteUser();
 
-    Map<String, String> queryParameters = {
-      'owner_id': this._currentUser.id.toString(),
-    };
-
-    var _getYourGroupsUrlEnpoint =
-        Uri.http('192.168.1.108:8000', 'monitor/groups/', queryParameters);
-    String token = this._token.access;
-
-    http.get(_getYourGroupsUrlEnpoint, headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    }).then((response) {
-      print(response.body);
+    _webservice
+        .fetchGroupsBasedOnSiteUserId(this._currentUser)
+        .then((groupList) {
       setState(() {
-        Iterable list = json.decode(response.body);
-        _ownerGroups = list.map((model) => Group.fromJson(model)).toList();
+        _ownerGroups = groupList;
       });
     });
   }
 
   _getUserGroups() {
-    var _getYourGroupsUrlEnpoint =
-        Uri.http('192.168.1.108:8000', 'monitor/user-groups/', {});
-    String token = this._token.access;
-
-    http.get(_getYourGroupsUrlEnpoint, headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    }).then((response) {
-      print(response.body);
+    _webservice.fetchUserGroups().then((uGroups) {
       setState(() {
-        Iterable list = json.decode(response.body);
-        _currentUserUserGroups =
-            list.map((model) => UserGroup.fromJson(model)).toList();
+        _currentUserUserGroups = uGroups;
       });
     });
   }
 
   _getRequestGroups() {
-    var _getYourGroupsUrlEnpoint =
-        Uri.http('192.168.1.108:8000', 'monitor/request-groups/', {});
-    String token = this._token.access;
-
-    http.get(_getYourGroupsUrlEnpoint, headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    }).then((response) {
+    _webservice.fetchRequestGroups().then((uGroups) {
       setState(() {
-        print(response.body);
-        Iterable list = json.decode(response.body);
-        _currentRequestToGroups =
-            list.map((model) => RequestToGroup.fromJson(model)).toList();
+        _currentRequestToGroups = uGroups;
       });
     });
   }
 
   _changeStatus(String status, RequestToGroup requestToGroup) async {
     String patchJson = '{"status":"' + status + '"}';
-    String token = this._token.access;
+    String token = this._webservice.token.access;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',

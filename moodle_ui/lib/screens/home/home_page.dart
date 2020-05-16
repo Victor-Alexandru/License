@@ -7,25 +7,26 @@ import 'package:moodle_ui/models/site-user.dart';
 import 'package:moodle_ui/models/token.dart';
 import 'package:moodle_ui/screens/chat/chat_screen.dart';
 import 'package:moodle_ui/screens/user/user_detail_screen.dart';
+import 'package:moodle_ui/service/WebService.dart';
 
 class HomePage extends StatefulWidget {
-  Token _token;
+  Webservice _webservice;
 
-  HomePage(Token token) {
-    this._token = token;
+  HomePage(Webservice ws) {
+    this._webservice = ws;
   }
 
   @override
-  _HomePageState createState() => _HomePageState(this._token);
+  _HomePageState createState() => _HomePageState(this._webservice);
 }
 
 class _HomePageState extends State<HomePage> {
   // Position _currentPosition;
-  Token _token;
+  Webservice _webservice;
   var _nearbySiteUsers = new List<SiteUser>();
 
-  _HomePageState(Token token) {
-    this._token = token;
+  _HomePageState(Webservice ws) {
+    this._webservice = ws;
   }
 
   Widget SiteUserCell(BuildContext ctx, int index) {
@@ -60,8 +61,8 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  UserDetailView(_token, _nearbySiteUsers[index])));
+                              builder: (context) => UserDetailView(
+                                  _webservice.token, _nearbySiteUsers[index])));
                     }),
                 IconButton(
                     icon: new Icon(Icons.chat, color: Colors.blue),
@@ -69,8 +70,8 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  ChatScreen(_token, _nearbySiteUsers[index])));
+                              builder: (context) => ChatScreen(
+                                  _webservice, _nearbySiteUsers[index])));
                     }),
               ],
             ),
@@ -150,52 +151,10 @@ class _HomePageState extends State<HomePage> {
 
   _getNearbyUsers() async {
     var preciseLocality = await this._getCurrentLocation();
-    Map<String, String> queryParameters = {
-      'locality': preciseLocality,
-    };
-
-    var _getNearbtUsersUrlEnpoint =
-        Uri.http('192.168.1.108:8000', 'monitor/site-users/', queryParameters);
-    String token = this._token.access;
-
-    http.get(_getNearbtUsersUrlEnpoint, headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    }).then((response) {
-      print(response.body);
+    _webservice.fetchNearbyUsers(preciseLocality).then((nearbyUsers) {
       setState(() {
-        Iterable list = json.decode(response.body);
-        _nearbySiteUsers =
-            list.map((model) => SiteUser.fromJson(model)).toList();
-        print(_nearbySiteUsers);
+        _nearbySiteUsers = nearbyUsers;
       });
     });
   }
 }
-
-// made if the user wants to set it's location
-// _makePatchRequest() async {
-//   var preciseLocality = await this._getCurrentLocation();
-
-//   String json = '{"location":"' + preciseLocality + '"}';
-
-//   Map<String, String> headers = {"Content-type": "application/json"};
-
-//   try {
-//     Response response =
-//         await http.patch(_apiPutUrl, headers: headers, body: json);
-
-//     print(response);
-
-//     if (response.statusCode == 200) {
-//       print("put success");
-//     } else {
-//       print("put not success");
-//     }
-//   } catch (e) {
-//     print(e);
-//   }
-
-//   //making a patch request to set the locality
-// }

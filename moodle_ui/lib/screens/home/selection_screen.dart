@@ -30,7 +30,7 @@ class SelectionScreen extends StatelessWidget {
             FlatButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomePage(token)));
+                    MaterialPageRoute(builder: (context) => HomePage(_webservice)));
               },
               child: Text(
                 "Find Users Nearby",
@@ -67,7 +67,7 @@ class SelectionScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => UserProfileView(this.token)));
+                        builder: (context) => UserProfileView(_webservice)));
               },
               child: Text(
                 "Your profile",

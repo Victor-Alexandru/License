@@ -6,29 +6,30 @@ import 'package:moodle_ui/models/site-user.dart';
 import 'package:moodle_ui/models/token.dart';
 import 'package:moodle_ui/models/user-message.dart';
 import 'package:http/http.dart' as http;
+import 'package:moodle_ui/service/WebService.dart';
 
 class ChatScreen extends StatefulWidget {
   SiteUser _nearbyUser;
-  Token _token;
+  Webservice _webservice;
 
-  ChatScreen(Token token, SiteUser nUser) {
-    this._token = token;
+  ChatScreen(Webservice ws, SiteUser nUser) {
+    this._webservice = ws;
     this._nearbyUser = nUser;
   }
 
   @override
-  _ChatScreenState createState() => _ChatScreenState(_token, _nearbyUser);
+  _ChatScreenState createState() => _ChatScreenState(_webservice, _nearbyUser);
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  Token _token;
+  Webservice _webservice;
   SiteUser _nearbyUser;
   List<UserMessage> _messages = new List();
   final _sendMessageController = TextEditingController();
   Timer timer;
 
-  _ChatScreenState(Token token, SiteUser nUser) {
-    this._token = token;
+  _ChatScreenState(Webservice ws, SiteUser nUser) {
+    this._webservice = ws;
     this._nearbyUser = nUser;
   }
 
@@ -147,7 +148,7 @@ class _ChatScreenState extends State<ChatScreen> {
               };
 
               String body = json.encode(data);
-              String token = this._token.access;
+              String token = this._webservice.token.access;
               await http
                   .post(
                 'http://192.168.1.108:8000/monitor/user-messages/',
@@ -171,25 +172,9 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   _getMessages() async {
-    Map<String, String> queryParameters = {
-      'second_user_id': _nearbyUser.id.toString(),
-    };
-    var _getUsersMessagesUrlEnpoint = Uri.http(
-        '192.168.1.108:8000', 'monitor/user-messages/', queryParameters);
-    String token = this._token.access;
-
-    http.get(_getUsersMessagesUrlEnpoint, headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    }).then((response) {
-      print("--------------------------");
-      print(response.body);
-      print("--------------------------");
-
+    _webservice.fetchUserMessages(_nearbyUser).then((userMessages) {
       setState(() {
-        Iterable list = json.decode(response.body);
-        _messages = list.map((model) => UserMessage.fromJson(model)).toList();
+        _messages= userMessages;
       });
     });
   }
