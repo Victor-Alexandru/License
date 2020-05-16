@@ -1,12 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:moodle_ui/models/token.dart';
-import 'package:moodle_ui/utils/network_util.dart';
-import 'package:moodle_ui/models/user.dart';
 import 'package:http/http.dart' as http;
 
 class RestDatasource {
-  NetworkUtil _netUtil = new NetworkUtil();
   static final LOGIN_URL = "http://192.168.1.108:8000/api/jwtauth/token/";
 
   Future<Token> login(String username, String password) {

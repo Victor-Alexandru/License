@@ -6,48 +6,76 @@ class RootScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Scaffold(
-      backgroundColor: Colors.white,
-      body: new Center(
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              height: 100,
+        backgroundColor: Colors.redAccent,
+        body: SafeArea(
+          child: Column(children: <Widget>[
+            Container(
+              height: MediaQuery.of(context).size.height /
+                  2.5, // Also Including Tab-bar height.
+//                        child: Chewie(
+//                          controller: _chewieController,
+//                        ),
+            child: new Center(
+              child:new Icon(Icons.border_clear,size: MediaQuery.of(context).size.width/2,)
             ),
-            FlatButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()));
-              },
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                  side: BorderSide(color: Colors.red)),
-              child: Text(
-                "Login",
-                style: TextStyle(fontSize: 14),
+            ),
+            Expanded(
+              child: new Align(
+                alignment: Alignment.topCenter,
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 100,
+                    ),
+                    MaterialButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()));
+                      },
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          side: BorderSide(color: Colors.black)),
+                      child: SizedBox(
+                        width:  MediaQuery.of(context).size.width/1.5,
+                        child: Text(
+                          "Login",
+                          style: TextStyle(fontSize: 24),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      color: Colors.white,
+                      textColor: Colors.black,
+                      padding: EdgeInsets.all(8.0),
+                    ),
+                    MaterialButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()));
+                      },
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          side: BorderSide(color: Colors.black)),
+                      child: SizedBox(
+                        width:  MediaQuery.of(context).size.width/1.5,
+                        child: Text(
+                          "Register",
+                          style: TextStyle(fontSize: 24),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      color: Colors.white,
+                      textColor: Colors.black,
+                      padding: EdgeInsets.all(8.0),
+                    ),
+                  ],
+                ),
               ),
-              color: Colors.white,
-              textColor: Colors.red,
-              padding: EdgeInsets.all(8.0),
             ),
-            FlatButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()));
-              },
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                  side: BorderSide(color: Colors.red)),
-              child: Text(
-                "Register",
-                style: TextStyle(fontSize: 14),
-              ),
-              color: Colors.white,
-              textColor: Colors.red,
-              padding: EdgeInsets.all(8.0),
-            ),
-          ],
-        ),
-      ),
-    );
+          ]),
+        ));
   }
 }
