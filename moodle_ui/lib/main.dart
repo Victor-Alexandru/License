@@ -5,7 +5,6 @@ import 'package:moodle_ui/screens/home/root_screen.dart';
 void main() =>
     runApp(new MaterialApp(
       title: 'Moodle',
-      theme: ThemeData.light() ,
       home:RootScreen(),
     ));
 
@@ -15,9 +14,7 @@ class LoginApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       title: 'Moodle UI',
-      theme: new ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData.dark(),
       routes: routes,
     );
   }

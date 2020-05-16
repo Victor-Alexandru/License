@@ -51,18 +51,30 @@ class LoginScreenState extends State<LoginScreen>
   @override
   Widget build(BuildContext context) {
     _ctx = context;
-    var loginBtn = new RaisedButton(
-      onPressed: _submit,
-      child: new Text("LOGIN"),
-      color: Colors.primaries[0],
-    );
+    var loginBtn = Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: MaterialButton(
+          onPressed: () {
+           _submit();
+          },
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+              side: BorderSide(color: Colors.black)),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width / 1.5,
+            child: Text(
+              "Login",
+              style: TextStyle(fontSize: 24),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          color: Colors.white,
+          textColor: Colors.black,
+          padding: EdgeInsets.all(8.0),
+        ));
 
     var loginForm = new Column(
       children: <Widget>[
-        new Text(
-          "Login App",
-          textScaleFactor: 2.0,
-        ),
         new Form(
           key: formKey,
           child: new Column(
@@ -76,14 +88,16 @@ class LoginScreenState extends State<LoginScreen>
                         ? "Username must have at least 5 chars"
                         : null;
                   },
-                  decoration: new InputDecoration(labelText: "Username"),
+                  decoration: new InputDecoration(
+                      labelText: "Username", icon: Icon(Icons.person)),
                 ),
               ),
               new Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: new TextFormField(
                   onSaved: (val) => _password = val,
-                  decoration: new InputDecoration(labelText: "Password"),
+                  decoration: new InputDecoration(
+                      labelText: "Password", icon: Icon(Icons.security)),
                 ),
               ),
             ],
@@ -96,20 +110,15 @@ class LoginScreenState extends State<LoginScreen>
     );
 
     return new Scaffold(
-      appBar: null,
+      backgroundColor: Colors.redAccent,
       key: scaffoldKey,
       body: new Container(
         child: new Center(
-          child: new ClipRect(
-            child: new BackdropFilter(
-              filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-              child: new Container(
-                child: loginForm,
-                height: 300.0,
-                width: 300.0,
-                decoration: new BoxDecoration(color: Colors.white),
-              ),
-            ),
+          child: new Container(
+            child: loginForm,
+            height: 300.0,
+            width: 300.0,
+            decoration: new BoxDecoration(color: Colors.redAccent),
           ),
         ),
       ),

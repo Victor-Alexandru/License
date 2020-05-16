@@ -1,6 +1,5 @@
 import 'package:moodle_ui/data/rest_ds.dart';
 import 'package:moodle_ui/models/token.dart';
-import 'package:moodle_ui/models/user.dart';
 
 abstract class LoginScreenContract {
   void onLoginSuccess(Token token);

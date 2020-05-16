@@ -20,60 +20,98 @@ class SelectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return new SafeArea(
         child: Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.redAccent,
       body: new Center(
         child: Column(
           children: <Widget>[
             SizedBox(
               height: 100,
             ),
-            FlatButton(
+            MaterialButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomePage(_webservice)));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HomePage(_webservice)));
               },
-              child: Text(
-                "Find Users Nearby",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                  side: BorderSide(color: Colors.black)),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width / 1.5,
+                child: Text(
+                  "Find Nearby Users",
+                  style: TextStyle(fontSize: 24),
+                  textAlign: TextAlign.center,
+                ),
               ),
-              color: Colors.lightBlueAccent,
+              color: Colors.white,
+              textColor: Colors.black,
+              padding: EdgeInsets.all(8.0),
             ),
-            FlatButton(
+            MaterialButton(
               onPressed: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => GroupScreen(_webservice)));
               },
-              child: Text(
-                "See your Gropus",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                  side: BorderSide(color: Colors.black)),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width / 1.5,
+                child: Text(
+                  "See your groups",
+                  style: TextStyle(fontSize: 24),
+                  textAlign: TextAlign.center,
+                ),
               ),
-              color: Colors.lightBlueAccent,
+              color: Colors.white,
+              textColor: Colors.black,
+              padding: EdgeInsets.all(8.0),
             ),
-            FlatButton(
+            MaterialButton(
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => FirebaseScreen()));
               },
-              child: Text(
-                "Firebase test",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                  side: BorderSide(color: Colors.black)),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width / 1.5,
+                child: Text(
+                  "Firebase Notifications",
+                  style: TextStyle(fontSize: 24),
+                  textAlign: TextAlign.center,
+                ),
               ),
-              color: Colors.lightBlueAccent,
+              color: Colors.white,
+              textColor: Colors.black,
+              padding: EdgeInsets.all(8.0),
             ),
-            FlatButton(
+            MaterialButton(
               onPressed: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => UserProfileView(_webservice)));
               },
-              child: Text(
-                "Your profile",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                  side: BorderSide(color: Colors.black)),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width / 1.5,
+                child: Text(
+                  "Your profile",
+                  style: TextStyle(fontSize: 24),
+                  textAlign: TextAlign.center,
+                ),
               ),
-              color: Colors.lightBlueAccent,
+              color: Colors.white,
+              textColor: Colors.black,
+              padding: EdgeInsets.all(8.0),
             )
           ],
         ),
