@@ -18,22 +18,32 @@ class RootScreen extends StatelessWidget {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => LoginScreen()));
               },
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                  side: BorderSide(color: Colors.red)),
               child: Text(
                 "Login",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                style: TextStyle(fontSize: 14),
               ),
-              color: Colors.lightBlueAccent,
+              color: Colors.white,
+              textColor: Colors.red,
+              padding: EdgeInsets.all(8.0),
             ),
             FlatButton(
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => LoginScreen()));
               },
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                  side: BorderSide(color: Colors.red)),
               child: Text(
                 "Register",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                style: TextStyle(fontSize: 14),
               ),
-              color: Colors.lightBlueAccent,
+              color: Colors.white,
+              textColor: Colors.red,
+              padding: EdgeInsets.all(8.0),
             ),
           ],
         ),
