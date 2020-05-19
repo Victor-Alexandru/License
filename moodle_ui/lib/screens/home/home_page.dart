@@ -106,7 +106,6 @@ class _HomePageState extends State<HomePage> {
 
   _getCurrentLocation() async {
     print(" -----  _getCurrentLocation START ----- ");
-    //code from flutter pub documentation
     Location location = new Location();
 
     bool _serviceEnabled;
@@ -120,7 +119,6 @@ class _HomePageState extends State<HomePage> {
         return;
       }
     }
-
     _permissionGranted = await location.hasPermission();
     if (_permissionGranted == PermissionStatus.DENIED) {
       _permissionGranted = await location.requestPermission();
@@ -128,11 +126,9 @@ class _HomePageState extends State<HomePage> {
         return;
       }
     }
-
     _locationData = await location.getLocation();
 
     // here it ends --- how to get the Location object based on user location permissions
-
     // getting the locality based on latitude and longitude
 
     final coordinates =
