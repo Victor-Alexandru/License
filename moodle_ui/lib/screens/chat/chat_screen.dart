@@ -51,10 +51,11 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      backgroundColor: Colors.redAccent,
       appBar: AppBar(
         elevation: 0.4,
         iconTheme: IconThemeData(color: Colors.black),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.redAccent,
         title: Row(children: <Widget>[
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -71,7 +72,7 @@ class _ChatScreenState extends State<ChatScreen> {
         Expanded(
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Colors.redAccent,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(30.0),
                 topRight: Radius.circular(30.0),
@@ -94,23 +95,20 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-
   Widget messageCell(BuildContext context, int index) {
-    return Container(
+    return SizedBox(
+      width: 50,
+      height: 50,
+      child: Container(
+        width: 200,
         padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
-        width: MediaQuery.of(context).size.width * 0.75,
-        margin: EdgeInsets.all(5),
-        decoration: BoxDecoration(
-            color: Color(0xFFFFEFEE),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(15.0),
-              bottomLeft: Radius.circular(15.0),
-              topRight: Radius.circular(15.0),
-              bottomRight: Radius.circular(15.0),
-            )),
-        child: Center(
-          child: Text(_messages[index].text),
-        ));
+        alignment: (this._nearbyUser.id == this._messages[index].toUserMsg)
+            ? Alignment.centerRight
+            : Alignment.centerLeft,
+        decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+        child: Text(_messages[index].text),
+      ),
+    );
   }
 
   _sendMessageWidget() {
@@ -168,7 +166,7 @@ class _ChatScreenState extends State<ChatScreen> {
   _getMessages() async {
     _webservice.fetchUserMessages(_nearbyUser).then((userMessages) {
       setState(() {
-        _messages= userMessages;
+        _messages = userMessages;
       });
     });
   }
