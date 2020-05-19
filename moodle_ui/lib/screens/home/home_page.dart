@@ -31,50 +31,54 @@ class _HomePageState extends State<HomePage> {
 
   Widget SiteUserCell(BuildContext ctx, int index) {
     return GestureDetector(
-      onTap: () {
-        print("Tap on " + _nearbySiteUsers[index].firstName);
-      },
       child: Card(
-          margin: EdgeInsets.all(8),
-          elevation: 4.0,
-          child: Container(
-            padding: EdgeInsets.all(16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Text(
-                      _nearbySiteUsers[index].firstName,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ],
+          margin: EdgeInsets.fromLTRB(32, 8, 32, 8),
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: MediaQuery.of(context).size.height / 12,
+                child: new Center(
+                    child: new Icon(
+                  Icons.person,
+                  size: MediaQuery.of(context).size.width / 6,
+                )),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text(
+                  _nearbySiteUsers[index].firstName,
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
                 ),
-                IconButton(
-                    icon: new Icon(Icons.supervised_user_circle,
-                        color: Colors.blue),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => UserDetailView(
-                                  _webservice.token, _nearbySiteUsers[index])));
-                    }),
-                IconButton(
-                    icon: new Icon(Icons.chat, color: Colors.blue),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ChatScreen(
-                                  _webservice, _nearbySiteUsers[index])));
-                    }),
-              ],
-            ),
+              ),
+              ButtonBar(
+                alignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  IconButton(
+                    iconSize: 32,
+                      icon: new Icon(Icons.supervised_user_circle,
+                          color: Colors.black),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UserDetailView(
+                                    _webservice.token,
+                                    _nearbySiteUsers[index])));
+                      }),
+                  IconButton(
+                      iconSize: 32,
+                      icon: new Icon(Icons.chat, color: Colors.black),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ChatScreen(
+                                    _webservice, _nearbySiteUsers[index])));
+                      }),
+                ],
+              ),
+            ],
           )),
     );
   }
@@ -82,17 +86,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Find Nearby Users"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.location_searching),
-            onPressed: () {
-              _getNearbyUsers();
-            },
-          ),
-        ],
-      ),
+      backgroundColor: Colors.redAccent,
       body: Center(
         child: Stack(children: <Widget>[
           ListView.builder(
@@ -100,6 +94,14 @@ class _HomePageState extends State<HomePage> {
             itemBuilder: (context, index) => SiteUserCell(context, index),
           ),
         ]),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _getNearbyUsers(),
+        child: Icon(
+          Icons.location_searching,
+          color: Colors.black,
+        ),
+        backgroundColor: Colors.white,
       ),
     );
   }
