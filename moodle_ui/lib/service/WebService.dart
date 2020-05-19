@@ -86,9 +86,11 @@ class Webservice {
 
     if (response.statusCode == 200) {
       Iterable list = jsonDecode(response.body);
+
       return list
           .map((userMessages) => UserMessage.fromJson(userMessages))
           .toList();
+
     } else {
       throw Exception("Unable to perform request!");
     }

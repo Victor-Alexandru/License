@@ -43,19 +43,12 @@ class _HomePageState extends State<HomePage> {
                   size: MediaQuery.of(context).size.width / 6,
                 )),
               ),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Text(
-                  _nearbySiteUsers[index].firstName,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-              ),
+              this._nearbySiteUsers[index].display(),
               ButtonBar(
                 alignment: MainAxisAlignment.center,
                 children: <Widget>[
                   IconButton(
-                    iconSize: 32,
+                      iconSize: 32,
                       icon: new Icon(Icons.supervised_user_circle,
                           color: Colors.black),
                       onPressed: () {

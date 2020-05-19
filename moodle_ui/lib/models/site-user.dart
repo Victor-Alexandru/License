@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class SiteUser {
   int id;
   String firstName;
@@ -23,5 +25,16 @@ class SiteUser {
       'surname': surname,
       'location': location
     };
+  }
+
+  Widget display() {
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Text(
+        this.firstName,
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        textAlign: TextAlign.center,
+      ),
+    );
   }
 }

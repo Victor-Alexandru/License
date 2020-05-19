@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:moodle_ui/models/site-user.dart';
-import 'package:moodle_ui/models/token.dart';
 import 'package:moodle_ui/models/user-message.dart';
 import 'package:http/http.dart' as http;
 import 'package:moodle_ui/service/WebService.dart';
@@ -95,11 +94,6 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  // ListView.builder(
-  //           itemCount: _messages.length,
-  //           itemBuilder: (BuildContext context, int index) {
-  //             return messageCell(context, index);
-  //           })
 
   Widget messageCell(BuildContext context, int index) {
     return Container(
