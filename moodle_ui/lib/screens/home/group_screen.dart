@@ -48,17 +48,7 @@ class _GroupScreenState extends State<GroupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Your Groups"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.list),
-            onPressed: () {
-              _getGroups();
-            },
-          ),
-        ],
-      ),
+      backgroundColor: Colors.redAccent,
       body: Center(
         child: Stack(children: <Widget>[
           ListView.builder(
@@ -66,6 +56,14 @@ class _GroupScreenState extends State<GroupScreen> {
             itemBuilder: (context, index) => GroupCell(context, index),
           ),
         ]),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _getGroups(),
+        child: Icon(
+          Icons.group,
+          color: Colors.black,
+        ),
+        backgroundColor: Colors.white,
       ),
     );
   }

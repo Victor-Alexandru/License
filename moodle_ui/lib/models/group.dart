@@ -56,31 +56,43 @@ class Group {
 
   Widget GroupCardView() {
     return Card(
-        margin: EdgeInsets.all(8),
-        elevation: 4.0,
-        child: Container(
-          padding: EdgeInsets.all(16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Text(
-                    this.name,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    " (" + this.skill.name + ")",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ],
+      margin: EdgeInsets.fromLTRB(32, 8, 32, 8),
+      elevation: 4.0,
+      child: Container(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              child: new IconButton(
+                icon: Icon(Icons.notifications),
+                color: Colors.black,
+                iconSize: 50,
+                onPressed: () {},
               ),
-              Icon(Icons.group, color: Colors.blue),
-            ],
-          ),
-        ));
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  this.name,
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            Container(
+                child: Center(
+              child: Text(
+                this.skill.name,
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blueAccent),
+              ),
+            ))
+          ],
+        ),
+      ),
+    );
   }
 }
