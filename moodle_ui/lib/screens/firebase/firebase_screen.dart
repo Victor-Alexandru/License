@@ -63,9 +63,7 @@ class _FirebaseScreenState extends State<FirebaseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Firebase test"),
-      ),
+      backgroundColor: Colors.redAccent,
       body: ListView.builder(
         itemCount: null == messagesList ? 0 : messagesList.length,
         itemBuilder: (BuildContext context, int index) {

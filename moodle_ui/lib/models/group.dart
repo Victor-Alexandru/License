@@ -65,7 +65,7 @@ class Group {
           children: <Widget>[
             Container(
               child: new IconButton(
-                icon: Icon(Icons.notifications),
+                icon: Icon(Icons.group),
                 color: Colors.black,
                 iconSize: 50,
                 onPressed: () {},
@@ -90,6 +90,60 @@ class Group {
                     color: Colors.blueAccent),
               ),
             ))
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget GroupProfileView() {
+    return Card(
+      margin: EdgeInsets.fromLTRB(32, 8, 32, 8),
+      elevation: 4.0,
+      child: Container(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              child: new IconButton(
+                icon: Icon(Icons.group),
+                color: Colors.black,
+                iconSize: 50,
+                onPressed: () {},
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  this.name,
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            Container(
+                child: Center(
+              child: Text(
+                this.skill.name,
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blueAccent),
+              ),
+            )),
+            ButtonBar(
+              alignment: MainAxisAlignment.center,
+              children: <Widget>[
+                IconButton(
+                    iconSize: 32,
+                    icon: new Icon(Icons.delete,
+                        color: Colors.red),
+                    onPressed: () {
+                    }),
+              ],
+            ),
+
           ],
         ),
       ),

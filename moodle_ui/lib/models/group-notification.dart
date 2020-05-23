@@ -27,7 +27,7 @@ class GroupNotification {
 
   Widget GroupNotificationCard(){
     return Card(
-        margin: EdgeInsets.all(8),
+        margin: EdgeInsets.fromLTRB(32, 8, 32, 8),
         elevation: 4.0,
         child: Container(
           padding: EdgeInsets.all(16),
@@ -42,11 +42,11 @@ class GroupNotification {
                   Text(
                     this.message,
                     style: TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+                        fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
-              Icon(Icons.notifications, color: Colors.deepOrange),
+              Icon(Icons.notifications, color: Colors.black,size: 25,),
             ],
           ),
         ));

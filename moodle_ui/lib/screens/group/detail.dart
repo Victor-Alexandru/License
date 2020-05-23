@@ -68,21 +68,10 @@ class _GroupDetailViewState extends State<GroupDetailView> {
 
   Widget NotificationPage() {
     return Container(
-      color: Colors.white,
+      color: Colors.redAccent,
       padding: EdgeInsets.all(16.0),
       child: Center(
         child: Stack(children: <Widget>[
-          Row(
-            children: <Widget>[
-              SizedBox(
-                width: 16,
-              ),
-              Text(
-                "Group Notification ",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
           ListView.builder(
             itemCount: _groupNotifications.length,
             itemBuilder: (context, index) =>
@@ -110,7 +99,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
 
   Widget MembersPage() {
     return Container(
-      color: Colors.white,
+      color: Colors.redAccent,
       child: Center(
         child: Text(
           "Page with all members enrolled to the course",
@@ -121,7 +110,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
 
   Widget FormPage() {
     return Container(
-      color: Colors.white,
+      color: Colors.redAccent,
       padding: EdgeInsets.all(16),
       child: Form(
         key: _formKey,

@@ -52,6 +52,7 @@ class _UserDetailViewState extends State<UserDetailView> {
     // TODO: implement build
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: Colors.redAccent,
         body: PageView(
           controller: _pageController,
           children: [ProfilePage(), OwnerGroupProfilePage()],
@@ -135,40 +136,56 @@ class _UserDetailViewState extends State<UserDetailView> {
     return GestureDetector(
       onTap: () {},
       child: Card(
-          margin: EdgeInsets.all(8),
+          margin: EdgeInsets.fromLTRB(32, 8, 32, 8),
           elevation: 4.0,
           child: Container(
-            padding: EdgeInsets.all(8),
-            child: Row(
+            padding: EdgeInsets.all(16),
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Text(
+                Container(
+                  child: new IconButton(
+                    icon: Icon(Icons.group),
+                    color: Colors.black,
+                    iconSize: 50,
+                    onPressed: () {},
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: Text(
                       _ownerGroups[index].name,
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
-                    Text(
-                      " (" + _ownerGroups[index].skill.name + ")",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
+                  ),
+                ),
+                Container(
+                    child: Center(
+                  child: Text(
+                    _ownerGroups[index].skill.name,
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blueAccent),
+                  ),
+                )),
+                ButtonBar(
+                  alignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    IconButton(
+                        icon: new Icon(Icons.send, color: Colors.blue),
+                        onPressed: () {
+                          ///make post to create a request to group
+                          _postReqToCreateRequestToGroup(_ownerGroups[index]);
+                        }),
+                    utils.isUserInGroupFromUsersGroupList(
+                            _currentUserUserGroups, _ownerGroups[index])
+                        ? Icon(Icons.check, color: Colors.blue)
+                        : Icon(Icons.close, color: Colors.blue),
                   ],
                 ),
-                IconButton(
-                    icon: new Icon(Icons.send, color: Colors.blue),
-                    onPressed: () {
-                      ///make post to create a request to group
-                      _postReqToCreateRequestToGroup(_ownerGroups[index]);
-                    }),
-                utils.isUserInGroupFromUsersGroupList(
-                        _currentUserUserGroups, _ownerGroups[index])
-                    ? Icon(Icons.check, color: Colors.blue)
-                    : Icon(Icons.close, color: Colors.blue),
               ],
             ),
           )),
@@ -177,7 +194,7 @@ class _UserDetailViewState extends State<UserDetailView> {
 
   Widget OwnerGroupProfilePage() {
     return Container(
-      color: Colors.white,
+      color: Colors.redAccent,
       padding: EdgeInsets.all(16.0),
       child: Center(
         child: Stack(children: <Widget>[

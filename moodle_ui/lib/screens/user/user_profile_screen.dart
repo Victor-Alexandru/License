@@ -59,6 +59,7 @@ class _UserProfileViewState extends State<UserProfileView> {
     // TODO: implement build
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: Colors.redAccent,
         body: PageView(
           controller: _pageController,
           children: [ProfilePage(), OwnerGroupProfilePage(), RequestsPage()],
@@ -141,47 +142,12 @@ class _UserProfileViewState extends State<UserProfileView> {
   Widget GroupCell(BuildContext ctx, int index) {
     return GestureDetector(
       onTap: () {},
-      child: Card(
-          margin: EdgeInsets.all(8),
-          elevation: 4.0,
-          child: Container(
-            padding: EdgeInsets.all(8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Text(
-                      _ownerGroups[index].name,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      " (" + _ownerGroups[index].skill.name + ")",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                IconButton(
-                    icon: new Icon(Icons.send, color: Colors.blue),
-                    onPressed: () {}),
-                utils.isUserInGroupFromUsersGroupList(
-                        _currentUserUserGroups, _ownerGroups[index])
-                    ? Icon(Icons.check, color: Colors.blue)
-                    : Icon(Icons.close, color: Colors.blue),
-              ],
-            ),
-          )),
-    );
+      child: _ownerGroups[index].GroupProfileView());
   }
 
   Widget OwnerGroupProfilePage() {
     return Container(
-      color: Colors.white,
+      color: Colors.redAccent,
       padding: EdgeInsets.all(16.0),
       child: Center(
         child: Stack(children: <Widget>[
@@ -213,7 +179,7 @@ class _UserProfileViewState extends State<UserProfileView> {
       child: Card(
           color: _currentRequestToGroups[index].status == "PG"
               ? Colors.green
-              : Colors.red,
+              : Colors.black,
           margin: EdgeInsets.all(8),
           elevation: 4.0,
           child: Container(
@@ -229,7 +195,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                     Text(
                       _currentRequestToGroups[index].requestFrom.username,
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.white),
                     ),
                   ],
                 ),
@@ -257,7 +223,7 @@ class _UserProfileViewState extends State<UserProfileView> {
 
   Widget RequestsPage() {
     return Container(
-      color: Colors.white,
+      color: Colors.redAccent,
       padding: EdgeInsets.all(16.0),
       child: Center(
         child: Stack(children: <Widget>[
