@@ -24,6 +24,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Webservice _webservice;
   SiteUser _nearbyUser;
   List<UserMessage> _messages = new List();
+  ScrollController _scrollController = new ScrollController();
   final _sendMessageController = TextEditingController();
   Timer timer;
 
@@ -36,6 +37,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void dispose() {
     // Clean up the controller when the widget is disposed.
     _sendMessageController.dispose();
+    _scrollController.dispose();
     timer.cancel();
     super.dispose();
   }
@@ -71,23 +73,13 @@ class _ChatScreenState extends State<ChatScreen> {
       body: Column(children: <Widget>[
         Expanded(
           child: Container(
-            decoration: BoxDecoration(
-              color: Colors.redAccent,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30.0),
-                topRight: Radius.circular(30.0),
-              ),
-            ),
-            child: ClipRRect(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30.0),
-                  topRight: Radius.circular(30.0),
-                ),
-                child: ListView.builder(
-                    itemCount: _messages.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return messageCell(context, index);
-                    })),
+            color: Colors.white,
+            child: ListView.builder(
+                controller: _scrollController,
+                itemCount: _messages.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return messageCell(context, index);
+                }),
           ),
         ),
         _sendMessageWidget(),
@@ -95,18 +87,51 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
+  void performScrollAnimations() {
+    _scrollController.animateTo(
+      (_scrollController.position.maxScrollExtent + 100),
+      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 300),
+    );
+  }
+
   Widget messageCell(BuildContext context, int index) {
-    return SizedBox(
-      width: 50,
-      height: 50,
-      child: Container(
-        width: 200,
-        padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
-        alignment: (this._nearbyUser.id == this._messages[index].toUserMsg)
-            ? Alignment.centerRight
-            : Alignment.centerLeft,
-        decoration: BoxDecoration(border: Border.all(color: Colors.black)),
-        child: Text(_messages[index].text),
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Flex(
+        direction: Axis.horizontal,
+        mainAxisAlignment:
+        (this._nearbyUser.id == this._messages[index].toUserMsg)
+            ? MainAxisAlignment.start
+            : MainAxisAlignment.end,
+        children: <Widget>[
+          Container(
+            padding: const EdgeInsets.all(20.0),
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery
+                  .of(context)
+                  .size
+                  .width * 0.7,
+            ),
+            decoration: (this._nearbyUser.id == this._messages[index].toUserMsg)
+                ? BoxDecoration(
+              border: Border.all(
+                color: Colors.grey,
+              ),
+              borderRadius: BorderRadius.all(
+                Radius.circular(30.0),
+              ),
+            )
+                : BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.all(
+                Radius.circular(30.0),
+              ),
+            ),
+            child: Text(_messages[index].text,
+                style: TextStyle(color: Colors.black)),
+          ),
+        ],
       ),
     );
   }
@@ -131,31 +156,36 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
             icon: Icon(Icons.send),
             iconSize: 25.0,
-            color: Theme.of(context).primaryColor,
+            color: Theme
+                .of(context)
+                .primaryColor,
             onPressed: () async {
-              print(_sendMessageController.text);
-              Map data = {
-                'text': _sendMessageController.text,
-                'to_user_msg': _nearbyUser.id.toString()
-              };
+              if (_sendMessageController.text.isNotEmpty) {
+                print(_sendMessageController.text);
+                Map data = {
+                  'text': _sendMessageController.text,
+                  'to_user_msg': _nearbyUser.id.toString()
+                };
 
-              String body = json.encode(data);
-              String token = this._webservice.token.access;
-              await http
-                  .post(
-                'http://192.168.1.108:8000/monitor/user-messages/',
-                headers: {
-                  "Content-Type": "application/json",
-                  'Authorization': 'Bearer $token'
-                },
-                body: body,
-              )
-                  .then((response) {
-                if (response.statusCode == 201) {
-                  _sendMessageController.clear();
-                  _getMessages();
-                }
-              });
+                String body = json.encode(data);
+                String token = this._webservice.token.access;
+                await http
+                    .post(
+                  'http://192.168.1.108:8000/monitor/user-messages/',
+                  headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': 'Bearer $token'
+                  },
+                  body: body,
+                )
+                    .then((response) {
+                  if (response.statusCode == 201) {
+                    _sendMessageController.clear();
+                    _getMessages();
+                    performScrollAnimations();
+                  }
+                });
+              }
             },
           ),
         ],
@@ -167,6 +197,8 @@ class _ChatScreenState extends State<ChatScreen> {
     _webservice.fetchUserMessages(_nearbyUser).then((userMessages) {
       setState(() {
         _messages = userMessages;
+        if (_messages.length != userMessages.length)
+          performScrollAnimations();
       });
     });
   }

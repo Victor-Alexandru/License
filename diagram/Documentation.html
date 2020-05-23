@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+              integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+              crossorigin="anonymous">
+</head>
+
+<body>
+       <div class="row">
+              <div class="col-sm"></div>
+              <div class="col-sm m-2 p-2">
+                     <div class="h2">
+                            Architecture diagram
+                     </div>
+                     <br />
+                     <div class="row h4">
+                            Django Server
+                     </div>
+                     <div class="row">
+                            Django is a high-level Python Web framework that encourages rapid development and clean,
+                            pragmatic design.
+                     </div>
+                     <div class="row">
+                            The main django application is composed by 2 apps . First application is jwauth - a third
+                            party app that helps with authentication- and
+                            the second application is named monitor - organizes the ORM and the business logic for the
+                            front-end app.
+                     </div>
+                     <div class="row">
+                            Urls.py module in the monitor app is responsible with mapping the urls and views.py are
+                            meant to provide the logic for the
+                            requests.
+                     </div>
+                     <div class="row">
+                            Models.py module gives a reflection of the database viewed in  python language.
+                     </div>
+                     <div class="row h4">
+                            Flutter Front End Application (named Moodle)
+                     </div>
+                     <div class="row">
+                            The application is used for making http requests to the server and displaying data to the
+                            user. The location sensor is used to identify user location. The app comunicates with  Firebase 
+                             so when a new Notification is added, the cloud function will notify the other users.
+
+                     </div>
+                     <div class="row">
+                            <img src="diagram.png" width="900" height="500">
+                     </div>
+
+              </div>
+              <div class="col-sm"></div>
+
+
+       </div>
+
+</body>
+
+</html>
