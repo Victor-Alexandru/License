@@ -29,6 +29,11 @@ class _UserProfileViewState extends State<UserProfileView> {
   var _ownerGroups = new List<Group>();
   var _currentUserUserGroups = new List<UserGroup>();
   var _currentRequestToGroups = new List<RequestToGroup>();
+  final _formKey = GlobalKey<FormState>();
+  final _groupNameCTR = TextEditingController();
+  final _groupSizeCTR = TextEditingController();
+  final _groupDurationCTR = TextEditingController();
+  final _groupSkillCTR = TextEditingController();
 
   _UserProfileViewState(Webservice ws, SiteUser nUser) {
     this._webservice = ws;
@@ -51,6 +56,10 @@ class _UserProfileViewState extends State<UserProfileView> {
   @override
   void dispose() {
     _pageController.dispose();
+    _groupNameCTR.dispose();
+    _groupSizeCTR.dispose();
+    _groupDurationCTR.dispose();
+    _groupSkillCTR.dispose();
     super.dispose();
   }
 
@@ -70,28 +79,176 @@ class _UserProfileViewState extends State<UserProfileView> {
 
   Widget ProfilePage() {
     Size screenSize = MediaQuery.of(context).size;
-    return Stack(
+    return Column(
       children: <Widget>[
-        _buildCoverImage(screenSize),
-        SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                SafeArea(
-                    child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      _buildProfileImage(),
-                      _buildFullName(),
-                    ],
-                  ),
-                ))
-              ],
+        Stack(
+          children: <Widget>[
+            _buildCoverImage(screenSize),
+            SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    SafeArea(
+                        child: SingleChildScrollView(
+                      child: Column(
+                        children: <Widget>[
+                          _buildProfileImage(),
+                          _buildFullName(),
+                        ],
+                      ),
+                    )),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        Container(
+          height: MediaQuery.of(context).size.height / 10,
+        ),
+        MaterialButton(
+          onPressed: () {
+            _showDialog();
+          },
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+              side: BorderSide(color: Colors.black)),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width / 1.5,
+            child: Text(
+              " Create a group ",
+              style: TextStyle(fontSize: 24),
+              textAlign: TextAlign.center,
             ),
           ),
+          color: Colors.white,
+          textColor: Colors.black,
+          padding: EdgeInsets.all(8.0),
         ),
       ],
     );
+  }
+
+  _showDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Stack(
+              overflow: Overflow.visible,
+              children: <Widget>[
+                Positioned(
+                  right: -40.0,
+                  top: -40.0,
+                  child: InkResponse(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: CircleAvatar(
+                      child: Icon(
+                        Icons.close,
+                        color: Colors.black,
+                      ),
+                      backgroundColor: Colors.redAccent,
+                    ),
+                  ),
+                ),
+                ListView(
+                  children: <Widget>[
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              controller: _groupNameCTR,
+                              decoration: new InputDecoration(
+                                labelText: "Name",
+                                fillColor: Colors.white,
+                                border: new OutlineInputBorder(
+                                  borderRadius: new BorderRadius.circular(25.0),
+                                  borderSide: new BorderSide(),
+                                ),
+                                //fillColor: Colors.green
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              controller: _groupSizeCTR,
+                              decoration: new InputDecoration(
+                                labelText: "Size",
+                                fillColor: Colors.white,
+                                border: new OutlineInputBorder(
+                                  borderRadius: new BorderRadius.circular(25.0),
+                                  borderSide: new BorderSide(),
+                                ),
+                                //fillColor: Colors.green
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              controller: _groupDurationCTR,
+                              decoration: new InputDecoration(
+                                labelText: "Duration",
+                                fillColor: Colors.white,
+                                border: new OutlineInputBorder(
+                                  borderRadius: new BorderRadius.circular(25.0),
+                                  borderSide: new BorderSide(),
+                                ),
+                                //fillColor: Colors.green
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              controller: _groupSkillCTR,
+                              decoration: new InputDecoration(
+                                labelText: "Skill",
+                                fillColor: Colors.white,
+                                border: new OutlineInputBorder(
+                                  borderRadius: new BorderRadius.circular(25.0),
+                                  borderSide: new BorderSide(),
+                                ),
+                                //fillColor: Colors.green
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: RaisedButton(
+                              child: Text("Create"),
+                              onPressed: () {
+                                if (_formKey.currentState.validate()) {
+                                  print(_groupNameCTR.text);
+                                  print(_groupSizeCTR.text);
+                                  print(_groupDurationCTR.text);
+                                  print(_groupSkillCTR.text);
+                                  print("Totul este ok");
+                                  this._webservice.makeAPostGroupRequest(
+                                      _groupNameCTR.text,
+                                      _groupSizeCTR.text,
+                                      _groupDurationCTR.text,
+                                      _groupSkillCTR.text);
+                                }
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   Widget _buildCoverImage(Size screenSize) {
@@ -141,8 +298,10 @@ class _UserProfileViewState extends State<UserProfileView> {
 
   Widget GroupCell(BuildContext ctx, int index) {
     return GestureDetector(
-      onTap: () {},
-      child: _ownerGroups[index].GroupProfileView());
+        onTap: () {
+          this._getGroups();
+        },
+        child: _ownerGroups[index].GroupProfileView(this._webservice));
   }
 
   Widget OwnerGroupProfilePage() {
@@ -155,12 +314,6 @@ class _UserProfileViewState extends State<UserProfileView> {
             children: <Widget>[
               SizedBox(
                 width: 16,
-              ),
-              Text(
-                this._currentUser != null
-                    ? "User  " + this._currentUser.firstName + " owner groups "
-                    : "Loading",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -194,8 +347,10 @@ class _UserProfileViewState extends State<UserProfileView> {
                     ),
                     Text(
                       _currentRequestToGroups[index].requestFrom.username,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.white),
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
                   ],
                 ),

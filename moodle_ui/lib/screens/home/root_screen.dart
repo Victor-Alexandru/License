@@ -11,9 +11,7 @@ class RootScreen extends StatelessWidget {
           child: Column(children: <Widget>[
             Container(
               height: MediaQuery.of(context).size.height /
-                  2.5, // Also Including Tab-bar height.
-//                        child: Chewie(
-//                          controller: _chewieController,
+                  2.5,
 //                        ),
             child: new Center(
               child:new Icon(Icons.border_clear,size: MediaQuery.of(context).size.width/2,)

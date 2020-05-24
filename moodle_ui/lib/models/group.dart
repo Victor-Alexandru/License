@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moodle_ui/models/skill.dart';
+import 'package:moodle_ui/service/WebService.dart';
 
 class Group {
   String _name;
@@ -96,7 +97,7 @@ class Group {
     );
   }
 
-  Widget GroupProfileView() {
+  Widget GroupProfileView(Webservice ws) {
     return Card(
       margin: EdgeInsets.fromLTRB(32, 8, 32, 8),
       elevation: 4.0,
@@ -137,13 +138,12 @@ class Group {
               children: <Widget>[
                 IconButton(
                     iconSize: 32,
-                    icon: new Icon(Icons.delete,
-                        color: Colors.red),
+                    icon: new Icon(Icons.delete, color: Colors.red),
                     onPressed: () {
+                      ws.makeDeleteGroupRequest(this.id);
                     }),
               ],
             ),
-
           ],
         ),
       ),

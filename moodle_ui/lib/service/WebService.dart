@@ -12,6 +12,7 @@ import 'package:moodle_ui/models/user-message.dart';
 class Webservice {
   Token token;
   Map<String, String> queryParameters = {};
+  final String deafultURL = "192.168.1.108:8000";
 
   Webservice(Token tk) {
     this.token = tk;
@@ -90,7 +91,6 @@ class Webservice {
       return list
           .map((userMessages) => UserMessage.fromJson(userMessages))
           .toList();
-
     } else {
       throw Exception("Unable to perform request!");
     }
@@ -143,6 +143,43 @@ class Webservice {
     } else {
       throw Exception("Unable to perform request!");
     }
+  }
 
+  void makeAPostGroupRequest(String groupName, String groupSize,
+      String groupDuration, String skillName) async {
+    var url = Uri.http('192.168.1.108:8000', 'monitor/groups/', {});
+
+    this.queryParameters.clear();
+    this.queryParameters['name'] = groupName;
+    this.queryParameters['group_size'] = groupSize;
+    this.queryParameters['estimated_work_duration'] = groupDuration;
+    this.queryParameters['skill_name'] = skillName;
+
+    String body = json.encode(this.queryParameters);
+    String access = this.token.access;
+
+    await http
+        .post(
+      url,
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $access'
+      },
+      body: body,
+    )
+        .then((response) {
+      if (response.statusCode == 201) {
+        print("post cu succes");
+      } else {
+        print("Sa busit ceva");
+        print(response.statusCode);
+      }
+    });
+  }
+
+  void makeDeleteGroupRequest(int groupId) async {
+    var url = Uri.http(
+        '192.168.1.108:8000', 'monitor/groups/' + groupId.toString() + "/", {});
+    await http.delete(url);
   }
 }
