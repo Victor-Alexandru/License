@@ -14,7 +14,7 @@ class _FirebaseScreenState extends State<FirebaseScreen> {
   @override
   void initState() {
     super.initState();
-    messagesList = List<Message>();
+    messagesList;
     _getToken();
     _configureFirebaseListeners();
   }
@@ -68,15 +68,29 @@ class _FirebaseScreenState extends State<FirebaseScreen> {
         itemCount: null == messagesList ? 0 : messagesList.length,
         itemBuilder: (BuildContext context, int index) {
           return Card(
-            child: Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Text(
-                messagesList[index].message,
-                style: TextStyle(
-                  fontSize: 16.0,
-                  color: Colors.black,
+            margin: EdgeInsets.fromLTRB(32, 8, 32, 8),
+            elevation: 4.0,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.all(4),
+                  height: MediaQuery.of(context).size.height / 12,
+                  child: new Center(
+                      child: new Icon(
+                        Icons.notifications_active,
+                        size: MediaQuery.of(context).size.width / 6,
+                      )),
                 ),
-              ),
+                Container(
+                  child: Text(
+                    messagesList[index].message,
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ],
             ),
           );
         },
