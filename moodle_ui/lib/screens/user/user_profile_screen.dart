@@ -331,47 +331,69 @@ class _UserProfileViewState extends State<UserProfileView> {
       onTap: () {},
       child: Card(
           color: _currentRequestToGroups[index].status == "PG"
-              ? Colors.green
-              : Colors.black,
-          margin: EdgeInsets.all(8),
+              ? Colors.white
+              : Colors.white,
+          margin: EdgeInsets.fromLTRB(32, 8, 32, 8),
           elevation: 4.0,
-          child: Container(
-            padding: EdgeInsets.all(8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Text(
-                      _currentRequestToGroups[index].requestFrom.username,
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                  ],
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: MediaQuery.of(context).size.height / 12,
+                child: new Center(
+                    child: new Icon(
+                  Icons.person,
+                  size: MediaQuery.of(context).size.width / 6,
+                )),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text(
+                  _currentRequestToGroups[index].requestFrom.username,
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
                 ),
-                _currentRequestToGroups[index].status == "PG"
-                    ? IconButton(
-                        icon: new Icon(Icons.close, color: Colors.blue),
-                        onPressed: () {
-                          _changeStatus('CL', _currentRequestToGroups[index]);
-                        })
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text(
+                  _currentRequestToGroups[index].group.name,
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: _currentRequestToGroups[index].status != "PG"
+                    ? Text(
+                        _currentRequestToGroups[index].getStatusLong(),
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      )
                     : Container(),
-                _currentRequestToGroups[index].status == "PG"
-                    ? IconButton(
-                        icon: new Icon(Icons.check, color: Colors.blue),
-                        onPressed: () {
-                          //put request to change status to acc or close
-                          //if put successfull then setState status to accordingly
-                          _changeStatus('AC', _currentRequestToGroups[index]);
-                        })
-                    : Container()
-              ],
-            ),
+              ),
+              ButtonBar(
+                alignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  _currentRequestToGroups[index].status == "PG"
+                      ? IconButton(
+                          icon: new Icon(Icons.close, color: Colors.blue),
+                          onPressed: () {
+                            _changeStatus('CL', _currentRequestToGroups[index]);
+                          })
+                      : Container(),
+                  _currentRequestToGroups[index].status == "PG"
+                      ? IconButton(
+                          icon: new Icon(Icons.check, color: Colors.blue),
+                          onPressed: () {
+                            //put request to change status to acc or close
+                            //if put successfull then setState status to accordingly
+                            _changeStatus('AC', _currentRequestToGroups[index]);
+                          })
+                      : Container()
+                ],
+              ),
+            ],
           )),
     );
   }

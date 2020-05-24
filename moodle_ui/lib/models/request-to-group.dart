@@ -18,7 +18,15 @@ class RequestToGroup {
   int get id => _id;
 
   int get requestTo => _requestTo;
-
+  String getStatusLong(){
+    if (status == "PG"){
+      return "PENDING";
+    }else if (status == "AC"){
+      return "ACCEPTED";
+    }else {
+      return "REJECTED";
+    }
+  }
   User get requestFrom => _requestFrom;
 
   Group get group => _group;

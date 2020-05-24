@@ -174,12 +174,14 @@ class _UserDetailViewState extends State<UserDetailView> {
                 ButtonBar(
                   alignment: MainAxisAlignment.center,
                   children: <Widget>[
+                    (!utils.isUserInGroupFromUsersGroupList(
+                        _currentUserUserGroups, _ownerGroups[index]))?
                     IconButton(
                         icon: new Icon(Icons.send, color: Colors.blue),
                         onPressed: () {
                           ///make post to create a request to group
                           _postReqToCreateRequestToGroup(_ownerGroups[index]);
-                        }),
+                        }):Container(),
                     utils.isUserInGroupFromUsersGroupList(
                             _currentUserUserGroups, _ownerGroups[index])
                         ? Icon(Icons.check, color: Colors.blue)
