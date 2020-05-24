@@ -40,6 +40,23 @@ class Webservice {
     }
   }
 
+  Future<List<SiteUser>> fetchMembers(String groupId) async {
+    this.queryParameters.clear();
+    queryParameters['group_id'] = groupId;
+
+    var url =
+        Uri.http('192.168.1.108:8000', 'monitor/members/', queryParameters);
+
+    final response = await makeGetRequest(url);
+
+    if (response.statusCode == 200) {
+      Iterable list = jsonDecode(response.body);
+      return list.map((siteUser) => SiteUser.fromJson(siteUser)).toList();
+    } else {
+      throw Exception("Unable to perform request!");
+    }
+  }
+
   Future<List<GroupNotification>> fetchGroupNotifications(Group group) async {
     var url = Uri.http('192.168.1.108:8000', 'monitor/group-notifications/',
         {"group_id": group.id.toString()});

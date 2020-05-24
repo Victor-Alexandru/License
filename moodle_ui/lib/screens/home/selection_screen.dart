@@ -25,7 +25,7 @@ class SelectionScreen extends StatelessWidget {
               child: Column(children: <Widget>[
                 Container(
                   height: MediaQuery.of(context).size.height /
-                      3, // Also Including Tab-bar height.
+                      5, // Also Including Tab-bar height.
 //                        child: Chewie(
 //                          controller: _chewieController,
 //                        ),
@@ -37,7 +37,6 @@ class SelectionScreen extends StatelessWidget {
                 ),
                 Expanded(
                   child: new Align(
-                    alignment: Alignment.topCenter,
                     child: Column(
                       children: <Widget>[
                         SizedBox(
@@ -48,7 +47,8 @@ class SelectionScreen extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => HomePage(_webservice)));
+                                    builder: (context) =>
+                                        HomePage(_webservice)));
                           },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0),
@@ -70,7 +70,8 @@ class SelectionScreen extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => GroupScreen(_webservice)));
+                                    builder: (context) =>
+                                        GroupScreen(_webservice)));
                           },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0),
@@ -89,8 +90,10 @@ class SelectionScreen extends StatelessWidget {
                         ),
                         MaterialButton(
                           onPressed: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => FirebaseScreen()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => FirebaseScreen()));
                           },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0),
@@ -112,7 +115,8 @@ class SelectionScreen extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => UserProfileView(_webservice)));
+                                    builder: (context) =>
+                                        UserProfileView(_webservice)));
                           },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0),
@@ -128,12 +132,10 @@ class SelectionScreen extends StatelessWidget {
                           color: Colors.white,
                           textColor: Colors.black,
                           padding: EdgeInsets.all(8.0),
-                        ), MaterialButton(
+                        ),
+                        MaterialButton(
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => UserProfileView(_webservice)));
+                            Navigator.of(context).pop();
                           },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0),

@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:moodle_ui/models/group-notification.dart';
 import 'package:moodle_ui/models/group.dart';
 import 'package:http/http.dart' as http;
+import 'package:moodle_ui/models/site-user.dart';
 import 'package:moodle_ui/models/token.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:moodle_ui/screens/chat/chat_screen.dart';
+import 'package:moodle_ui/screens/user/user_detail_screen.dart';
 import 'package:moodle_ui/service/WebService.dart';
 
 class GroupDetailView extends StatefulWidget {
@@ -25,6 +28,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
   PageController _pageController;
   Group _currentGroup;
   List _groupNotifications = new List<GroupNotification>();
+  List _members = new List<SiteUser>();
   Webservice _webservice;
   String _messageText;
   String _colorText;
@@ -42,6 +46,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
     super.initState();
     _pageController = PageController();
     _getGroupNotifications();
+    _getMembers();
   }
 
   @override
@@ -54,6 +59,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: Colors.redAccent,
         body: PageView(
           controller: _pageController,
           children: [
@@ -97,14 +103,60 @@ class _GroupDetailViewState extends State<GroupDetailView> {
     });
   }
 
+  Widget SiteUserCell(BuildContext ctx, int index) {
+    return GestureDetector(
+      child: Card(
+          margin: EdgeInsets.fromLTRB(32, 8, 32, 8),
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: MediaQuery.of(context).size.height / 12,
+                child: new Center(
+                    child: new Icon(
+                  Icons.person,
+                  size: MediaQuery.of(context).size.width / 6,
+                )),
+              ),
+              this._members[index].display(),
+              ButtonBar(
+                alignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  IconButton(
+                      iconSize: 32,
+                      icon: new Icon(Icons.supervised_user_circle,
+                          color: Colors.black),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UserDetailView(
+                                    _webservice.token, _members[index])));
+                      }),
+                  IconButton(
+                      iconSize: 32,
+                      icon: new Icon(Icons.chat, color: Colors.black),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ChatScreen(_webservice, _members[index])));
+                      }),
+                ],
+              ),
+            ],
+          )),
+    );
+  }
+
   Widget MembersPage() {
-    return Container(
-      color: Colors.redAccent,
-      child: Center(
-        child: Text(
-          "Page with all members enrolled to the course",
+    return Center(
+      child: Stack(children: <Widget>[
+        ListView.builder(
+          itemCount: _members.length,
+          itemBuilder: (context, index) => SiteUserCell(context, index),
         ),
-      ),
+      ]),
     );
   }
 
@@ -231,5 +283,14 @@ class _GroupDetailViewState extends State<GroupDetailView> {
         _prioriyText = value;
       },
     );
+  }
+
+  _getMembers() async {
+    var groupId = this._currentGroup.id.toString();
+    _webservice.fetchMembers(groupId).then((m) {
+      setState(() {
+        _members = m;
+      });
+    });
   }
 }
