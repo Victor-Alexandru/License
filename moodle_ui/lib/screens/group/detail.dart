@@ -7,6 +7,7 @@ import 'package:moodle_ui/models/site-user.dart';
 import 'package:moodle_ui/models/token.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:moodle_ui/models/user-group.dart';
 import 'package:moodle_ui/screens/chat/chat_screen.dart';
 import 'package:moodle_ui/screens/user/user_detail_screen.dart';
 import 'package:moodle_ui/service/WebService.dart';
@@ -33,6 +34,8 @@ class _GroupDetailViewState extends State<GroupDetailView> {
   String _messageText;
   String _colorText;
   String _prioriyText;
+  SiteUser _currentUser;
+  var _currentUserUserGroups = new List<UserGroup>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -41,9 +44,15 @@ class _GroupDetailViewState extends State<GroupDetailView> {
     this._webservice = ws;
   }
 
+  _setSiteUser() async {
+    this._currentUser = await this._webservice.fetchSiteUserBasedOnToken();
+  }
+
   @override
   void initState() {
     super.initState();
+    _setSiteUser();
+    _getUserGroups();
     _pageController = PageController();
     _getGroupNotifications();
     _getMembers();
@@ -142,6 +151,33 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                                 builder: (context) =>
                                     ChatScreen(_webservice, _members[index])));
                       }),
+                  (this._currentGroup.ownerId == this._currentUser.id)
+                      ? IconButton(
+                          iconSize: 32,
+                          icon: new Icon(Icons.delete_forever,
+                              color: Colors.redAccent),
+                          onPressed: () async {
+                            for (UserGroup userGroup
+                                in _currentUserUserGroups) {
+                              if (userGroup.groupId == this._currentGroup.id &&
+                                  this._members[index].id ==
+                                      userGroup.user.id) {
+                                int status = await this
+                                    ._webservice
+                                    .makeDeleteUserGroupRequest(userGroup.id);
+                                if (status >= 200 && status < 300) {
+                                  setState(() {
+                                    this._members.removeWhere(
+                                        (item) => item.id == userGroup.user.id);
+                                  });
+                                  break;
+                                }
+                              }
+                            }
+
+                            //doar owneru are voie sa dea delete
+                          })
+                      : Container(),
                 ],
               ),
             ],
@@ -290,6 +326,15 @@ class _GroupDetailViewState extends State<GroupDetailView> {
     _webservice.fetchMembers(groupId).then((m) {
       setState(() {
         _members = m;
+      });
+    });
+  }
+
+  _getUserGroups() async {
+    var groupId = this._currentGroup.id.toString();
+    _webservice.fetchUserGroupsByGroupID(groupId).then((m) {
+      setState(() {
+        _currentUserUserGroups = m;
       });
     });
   }

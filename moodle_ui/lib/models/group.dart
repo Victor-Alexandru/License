@@ -7,6 +7,7 @@ class Group {
   int _groupSize;
   int _estimatedWorkDuration;
   int _id;
+  int _ownerId;
   Skill _skill;
 
   Group(this._name, this._groupSize, this._estimatedWorkDuration);
@@ -14,6 +15,7 @@ class Group {
   Group.map(dynamic obj) {
     this._name = obj["name"];
     this._id = obj["id"];
+    this._ownerId = obj["owner"];
     this._groupSize = obj["group_size"];
     this._estimatedWorkDuration = obj["estimated_work_duration"];
   }
@@ -21,6 +23,8 @@ class Group {
   String get name => _name;
 
   int get id => _id;
+
+  int get ownerId => _ownerId;
 
   int get groupSize => _groupSize;
 
@@ -32,6 +36,7 @@ class Group {
     var map = new Map<String, dynamic>();
     map["name"] = _name;
     map["id"] = _id;
+    map["owner"] = _ownerId;
     map["group_size"] = _groupSize;
     map["estimated_work_duration"] = _estimatedWorkDuration;
 
@@ -41,6 +46,7 @@ class Group {
   Group.fromJson(Map jsonDict)
       : _id = jsonDict['id'],
         _name = jsonDict['name'],
+        _ownerId = jsonDict['owner'],
         _groupSize = jsonDict['group_size'],
         _estimatedWorkDuration = jsonDict['estimated_work_duration'],
         _skill = Skill.fromJson(jsonDict["skill"]);

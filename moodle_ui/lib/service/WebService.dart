@@ -149,6 +149,22 @@ class Webservice {
     }
   }
 
+  Future<List<UserGroup>> fetchUserGroupsByGroupID(String groupId) async {
+    this.queryParameters.clear();
+    queryParameters['group_id'] = groupId;
+
+    var url = Uri.http(
+        '192.168.1.108:8000', 'monitor/user-groups-group/', queryParameters);
+
+    final response = await makeGetRequest(url);
+    if (response.statusCode == 200) {
+      Iterable list = jsonDecode(response.body);
+      return list.map((ug) => UserGroup.fromJson(ug)).toList();
+    } else {
+      throw Exception("Unable to perform request!");
+    }
+  }
+
   Future<List<RequestToGroup>> fetchRequestGroups() async {
     var url = Uri.http('192.168.1.108:8000', 'monitor/request-groups/', {});
 
@@ -198,5 +214,18 @@ class Webservice {
     var url = Uri.http(
         '192.168.1.108:8000', 'monitor/groups/' + groupId.toString() + "/", {});
     await http.delete(url);
+  }
+
+  Future<int> makeDeleteUserGroupRequest(int groupId) async {
+    var url = Uri.http('192.168.1.108:8000',
+        'monitor/user-groups/' + groupId.toString() + "/", {});
+    String access = this.token.access;
+
+    var response = await http.delete(url, headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $access',
+    });
+    return response.statusCode;
   }
 }

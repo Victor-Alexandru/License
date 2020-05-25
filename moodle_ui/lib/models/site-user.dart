@@ -6,6 +6,7 @@ class SiteUser {
   String surname;
   String location;
 
+
   SiteUser(int id, String firstName, String surname, String location) {
     this.id = id;
     this.firstName = firstName;
