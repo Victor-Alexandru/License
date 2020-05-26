@@ -11,9 +11,9 @@ class SelectionScreen extends StatelessWidget {
   Token token;
   Webservice _webservice;
 
-  SelectionScreen(Token token) {
+  SelectionScreen(Token token,String username) {
     this.token = token;
-    _webservice = new Webservice(token);
+    _webservice = new Webservice(token,username);
   }
 
   @override

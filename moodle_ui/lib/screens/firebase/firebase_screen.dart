@@ -42,9 +42,6 @@ class _FirebaseScreenState extends State<FirebaseScreen> {
         _setMessage(message);
       },
     );
-//    _firebaseMessaging.requestNotificationPermissions(
-//      const IosNotificationSettings(sound: true, badge: true, alert: true),
-//    );
   }
 
   _setMessage(Map<String, dynamic> message) {
@@ -77,9 +74,9 @@ class _FirebaseScreenState extends State<FirebaseScreen> {
                   height: MediaQuery.of(context).size.height / 12,
                   child: new Center(
                       child: new Icon(
-                        Icons.notifications_active,
-                        size: MediaQuery.of(context).size.width / 6,
-                      )),
+                    Icons.notifications_active,
+                    size: MediaQuery.of(context).size.width / 6,
+                  )),
                 ),
                 Container(
                   child: Text(

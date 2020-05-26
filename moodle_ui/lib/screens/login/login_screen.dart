@@ -1,10 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:moodle_ui/auth.dart';
 import 'package:moodle_ui/models/token.dart';
-import 'package:moodle_ui/models/user.dart';
-import 'package:moodle_ui/routes.dart';
-import 'package:moodle_ui/screens/home/home_page.dart';
 import 'package:moodle_ui/screens/home/selection_screen.dart';
 import 'package:moodle_ui/screens/login/login_screen_presenter.dart';
 
@@ -57,7 +53,7 @@ class LoginScreenState extends State<LoginScreen>
         padding: const EdgeInsets.all(8.0),
         child: MaterialButton(
           onPressed: () {
-           _submit();
+            _submit();
           },
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(18.0),
@@ -135,18 +131,14 @@ class LoginScreenState extends State<LoginScreen>
   }
 
   @override
-  void onLoginSuccess(Token token) async {
+  void onLoginSuccess(Token token, String username) async {
     _showSnackBar(token.access);
     setState(() => _isLoading = false);
 
     //changing the route
-    Route route =
-        MaterialPageRoute(builder: (context) => SelectionScreen(token));
+    Route route = MaterialPageRoute(
+        builder: (context) => SelectionScreen(token, username));
 
     Navigator.pushReplacement(context, route);
-
-    // Navigator.of(_ctx).pushReplacementNamed("/home");
-    // var db = new DatabaseHelper();
-    // await db.saveUser(user);
   }
 }

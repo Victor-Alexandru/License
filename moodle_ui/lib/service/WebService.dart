@@ -8,14 +8,19 @@ import 'package:moodle_ui/models/site-user.dart';
 import 'package:moodle_ui/models/token.dart';
 import 'package:moodle_ui/models/user-group.dart';
 import 'package:moodle_ui/models/user-message.dart';
+import 'package:moodle_ui/service/FirebaseService.dart';
 
 class Webservice {
   Token token;
   Map<String, String> queryParameters = {};
   final String deafultURL = "192.168.1.108:8000";
+  FirebaseService _fbs = FirebaseService();
+  String _username;
 
-  Webservice(Token tk) {
+  Webservice(Token tk, String username) {
     this.token = tk;
+    this._username = username;
+    this._fbs.setFirebaseToken(username);
   }
 
   Future<http.Response> makeGetRequest(url) async {
