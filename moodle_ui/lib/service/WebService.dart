@@ -15,12 +15,15 @@ class Webservice {
   Map<String, String> queryParameters = {};
   final String deafultURL = "192.168.1.108:8000";
   FirebaseService _fbs = FirebaseService();
-  String _username;
 
   Webservice(Token tk, String username) {
     this.token = tk;
-    this._username = username;
     this._fbs.setFirebaseToken(username);
+  }
+
+  void addFireBaseMessage(
+      String messageText, String groupName, List<String> usernames) {
+    this._fbs.addFireBaseMessage(messageText, groupName, usernames);
   }
 
   Future<http.Response> makeGetRequest(url) async {

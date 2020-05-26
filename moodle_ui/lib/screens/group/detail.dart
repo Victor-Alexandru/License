@@ -4,8 +4,6 @@ import 'package:moodle_ui/models/group-notification.dart';
 import 'package:moodle_ui/models/group.dart';
 import 'package:http/http.dart' as http;
 import 'package:moodle_ui/models/site-user.dart';
-import 'package:moodle_ui/models/token.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:moodle_ui/models/user-group.dart';
 import 'package:moodle_ui/screens/chat/chat_screen.dart';
@@ -247,14 +245,12 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                 )
                     .then((response) {
                   if (response.statusCode == 201) {
-                    Firestore.instance.runTransaction((transaction) async {
-                      await transaction.set(
-                          Firestore.instance.collection("Messages").document(),
-                          {
-                            'message': _messageText,
-                          });
-                    });
-                    print("post cu succes");
+                    List<String> usernames = [];
+                    for (SiteUser su in _members) {
+                      usernames.add(su.firstName);
+                    }
+                    this._webservice.addFireBaseMessage(
+                        _messageText, _currentGroup.name, usernames);
                   }
                 });
 

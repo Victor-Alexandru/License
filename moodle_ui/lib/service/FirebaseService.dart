@@ -30,4 +30,17 @@ class FirebaseService {
       }
     });
   }
+
+  addFireBaseMessage(
+      String messageText, String groupName, List<String> usernames) async {
+    databaseReference.runTransaction((transaction) async {
+      await transaction
+          .set(Firestore.instance.collection("Messages").document(), {
+        'message': messageText,
+        'groupName': groupName,
+        'ownerName': 'OWNER',
+        'members': FieldValue.arrayUnion(usernames),
+      });
+    });
+  }
 }
