@@ -88,28 +88,28 @@ class SelectionScreen extends StatelessWidget {
                           textColor: Colors.black,
                           padding: EdgeInsets.all(8.0),
                         ),
-                        MaterialButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => FirebaseScreen()));
-                          },
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(color: Colors.black)),
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width / 1.5,
-                            child: Text(
-                              "Firebase Notifications",
-                              style: TextStyle(fontSize: 24),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          color: Colors.white,
-                          textColor: Colors.black,
-                          padding: EdgeInsets.all(8.0),
-                        ),
+//                        MaterialButton(
+//                          onPressed: () {
+//                            Navigator.push(
+//                                context,
+//                                MaterialPageRoute(
+//                                    builder: (context) => FirebaseScreen()));
+//                          },
+//                          shape: RoundedRectangleBorder(
+//                              borderRadius: BorderRadius.circular(18.0),
+//                              side: BorderSide(color: Colors.black)),
+//                          child: SizedBox(
+//                            width: MediaQuery.of(context).size.width / 1.5,
+//                            child: Text(
+//                              "Firebase Notifications",
+//                              style: TextStyle(fontSize: 24),
+//                              textAlign: TextAlign.center,
+//                            ),
+//                          ),
+//                          color: Colors.white,
+//                          textColor: Colors.black,
+//                          padding: EdgeInsets.all(8.0),
+//                        ),
                         MaterialButton(
                           onPressed: () {
                             Navigator.push(

@@ -27,6 +27,12 @@ class FirebaseService {
         });
 
         print(ref.documentID);
+      } else {
+        qsnapshot.documents.forEach((elem) {
+          elem.reference.updateData(<String,dynamic>{
+            'username':username
+          });
+        });
       }
     });
   }
