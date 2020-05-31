@@ -132,7 +132,6 @@ class LoginScreenState extends State<LoginScreen>
 
   @override
   void onLoginSuccess(Token token, String username) async {
-    _showSnackBar(token.access);
     setState(() => _isLoading = false);
 
     //changing the route
