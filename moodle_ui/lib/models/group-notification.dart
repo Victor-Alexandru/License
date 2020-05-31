@@ -31,10 +31,9 @@ class GroupNotification {
         elevation: 4.0,
         child: Container(
           padding: EdgeInsets.all(16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Wrap(
             children: <Widget>[
-              Row(
+              Wrap(
                 children: <Widget>[
                   SizedBox(
                     width: 16,
@@ -46,7 +45,6 @@ class GroupNotification {
                   ),
                 ],
               ),
-              Icon(Icons.notifications, color: Colors.black,size: 25,),
             ],
           ),
         ));

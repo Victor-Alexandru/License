@@ -4,7 +4,6 @@ import 'package:moodle_ui/models/group-notification.dart';
 import 'package:moodle_ui/models/group.dart';
 import 'package:http/http.dart' as http;
 import 'package:moodle_ui/models/site-user.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:moodle_ui/models/user-group.dart';
 import 'package:moodle_ui/screens/chat/chat_screen.dart';
 import 'package:moodle_ui/screens/user/user_detail_screen.dart';
