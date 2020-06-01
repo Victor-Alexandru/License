@@ -93,6 +93,7 @@ class LoginScreenState extends State<LoginScreen>
               new Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: new TextFormField(
+                  obscureText: true,
                   onSaved: (val) => _password = val,
                   decoration: new InputDecoration(
                       labelText: "Password", icon: Icon(Icons.security)),
@@ -102,7 +103,6 @@ class LoginScreenState extends State<LoginScreen>
           ),
         ),
         loginBtn
-        // _isLoading ? new CircularProgressIndicator() : loginBtn
       ],
       crossAxisAlignment: CrossAxisAlignment.center,
     );

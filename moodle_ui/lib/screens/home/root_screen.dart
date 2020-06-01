@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moodle_ui/screens/login/login_screen.dart';
+import 'package:moodle_ui/screens/register/register_screen.dart';
 
 class RootScreen extends StatelessWidget {
   @override
@@ -52,7 +53,7 @@ class RootScreen extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginScreen()));
+                                builder: (context) => RegisterScreen()));
                       },
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18.0),
