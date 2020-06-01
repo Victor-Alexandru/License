@@ -224,6 +224,24 @@ class Webservice {
     await http.delete(url);
   }
 
+  void makePatchRequest(String location) async {
+    SiteUser sU = await fetchSiteUserBasedOnToken();
+    this.queryParameters.clear();
+    this.queryParameters['location'] = location;
+    String access = this.token.access;
+    String body = json.encode(this.queryParameters);
+
+    var url = Uri.http(
+        '192.168.1.108:8000', 'monitor/site-users/' + sU.id.toString() + "/", {});
+
+    await http.patch(url,
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $access'
+        },
+        body: body);
+  }
+
   Future<int> makeDeleteUserGroupRequest(int groupId) async {
     var url = Uri.http('192.168.1.108:8000',
         'monitor/user-groups/' + groupId.toString() + "/", {});

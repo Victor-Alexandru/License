@@ -100,7 +100,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   _getCurrentLocation() async {
-    print(" -----  _getCurrentLocation START ----- ");
     Location location = new Location();
 
     bool _serviceEnabled;
@@ -135,7 +134,7 @@ class _HomePageState extends State<HomePage> {
 
     var preciseLocality = first.locality;
 
-    print(" -----  _getCurrentLocation END ----- ");
+    await this._webservice.makePatchRequest(preciseLocality);
 
     return preciseLocality;
   }
