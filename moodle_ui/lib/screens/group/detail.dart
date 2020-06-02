@@ -61,6 +61,14 @@ class _GroupDetailViewState extends State<GroupDetailView> {
     super.dispose();
   }
 
+  List<Widget> getPages() {
+    if (this._currentGroup.ownerId == this._currentUser.id) {
+      return [NotificationPage(), MembersPage(), FormPage()];
+    } else {
+      return [NotificationPage(), MembersPage()];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -68,11 +76,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
         backgroundColor: Colors.redAccent,
         body: PageView(
           controller: _pageController,
-          children: [
-            NotificationPage(),
-            MembersPage(),
-            FormPage(),
-          ],
+          children: _currentUser != null ? getPages() : [],
         ),
       ),
     );
@@ -197,122 +201,144 @@ class _GroupDetailViewState extends State<GroupDetailView> {
     return Container(
       color: Colors.redAccent,
       padding: EdgeInsets.all(16),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _buildMessageField(),
-            _buildColorField(),
-            _buildPriorityField(),
-            SizedBox(height: 100),
-            RaisedButton(
-              color: Colors.white70,
-              child: Text(
-                'Send Notification',
-                style: TextStyle(color: Colors.black45, fontSize: 16),
-              ),
-              onPressed: () async {
-                if (!_formKey.currentState.validate()) {
-                  return;
-                }
-
-                _formKey.currentState.save();
-
-                print(_messageText);
-                print(_colorText);
-                print(_prioriyText);
-
-                //making the post request here
-                Map data = {
-                  'message': _messageText,
-                  'color': _colorText,
-                  'priority': _prioriyText,
-                  'group': _currentGroup.id,
-                };
-                String body = json.encode(data);
-                String token = this._webservice.token.access;
-
-                await http
-                    .post(
-                  'http://192.168.1.108:8000/monitor/group-notifications/',
-                  headers: {
-                    "Content-Type": "application/json",
-                    'Authorization': 'Bearer $token'
-                  },
-                  body: body,
-                )
-                    .then((response) {
-                  if (response.statusCode == 201) {
-                    List<String> usernames = [];
-                    for (SiteUser su in _members) {
-                      usernames.add(su.firstName);
+      child: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              _buildMessageField(),
+              _buildColorField(),
+              _buildPriorityField(),
+              SizedBox(height: 100),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: MaterialButton(
+                  color: Colors.white,
+                  textColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                      side: BorderSide(color: Colors.black)),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width / 1.5,
+                    child: Text(
+                      'Send Notification',
+                      style: TextStyle(color: Colors.black, fontSize: 24),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  onPressed: () async {
+                    if (!_formKey.currentState.validate()) {
+                      return;
                     }
-                    this._webservice.addFireBaseMessage(
-                        _messageText, _currentGroup.name, usernames);
-                  }
-                });
 
-                // finishing the post request
+                    _formKey.currentState.save();
 
-                //Send to API
-              },
-            ),
-            SizedBox(height: 100),
-          ],
+                    print(_messageText);
+                    print(_colorText);
+                    print(_prioriyText);
+
+                    //making the post request here
+                    Map data = {
+                      'message': _messageText,
+                      'color': _colorText,
+                      'priority': _prioriyText,
+                      'group': _currentGroup.id,
+                    };
+                    String body = json.encode(data);
+                    String token = this._webservice.token.access;
+
+                    await http
+                        .post(
+                      'http://192.168.1.108:8000/monitor/group-notifications/',
+                      headers: {
+                        "Content-Type": "application/json",
+                        'Authorization': 'Bearer $token'
+                      },
+                      body: body,
+                    )
+                        .then((response) {
+                      if (response.statusCode == 201) {
+                        List<String> usernames = [];
+                        for (SiteUser su in _members) {
+                          usernames.add(su.firstName);
+                        }
+                        this._webservice.addFireBaseMessage(
+                            _messageText, _currentGroup.name, usernames);
+                      }
+                    });
+
+                    // finishing the post request
+
+                    //Send to API
+                  },
+                ),
+              ),
+              SizedBox(height: 100),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildMessageField() {
-    return TextFormField(
-      decoration: InputDecoration(labelText: 'Message'),
-      maxLength: 25,
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'Message is Required';
-        }
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextFormField(
+        decoration: InputDecoration(labelText: 'Message'),
+        maxLength: 25,
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'Message is Required';
+          }
 
-        return null;
-      },
-      onSaved: (String value) {
-        _messageText = value;
-      },
+          return null;
+        },
+        onSaved: (String value) {
+          _messageText = value;
+        },
+      ),
     );
   }
 
   Widget _buildColorField() {
-    return TextFormField(
-      decoration: InputDecoration(labelText: 'Color'),
-      maxLength: 25,
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'Color is Required';
-        }
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextFormField(
+        decoration: InputDecoration(labelText: 'Color'),
+        maxLength: 25,
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'Color is Required';
+          }
 
-        return null;
-      },
-      onSaved: (String value) {
-        _colorText = value;
-      },
+          return null;
+        },
+        onSaved: (String value) {
+          _colorText = value;
+        },
+      ),
     );
   }
 
   Widget _buildPriorityField() {
-    return TextFormField(
-      decoration: InputDecoration(labelText: 'Priority'),
-      maxLength: 25,
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'Priority is Required';
-        }
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextFormField(
+        decoration: InputDecoration(labelText: 'Priority'),
+        maxLength: 25,
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'Priority is Required';
+          }
 
-        return null;
-      },
-      onSaved: (String value) {
-        _prioriyText = value;
-      },
+          return null;
+        },
+        onSaved: (String value) {
+          _prioriyText = value;
+        },
+      ),
     );
   }
 
