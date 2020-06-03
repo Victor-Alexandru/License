@@ -5,6 +5,7 @@ class SiteUser {
   String firstName;
   String surname;
   String location;
+  String description;
 
 
   SiteUser(int id, String firstName, String surname, String location) {
@@ -17,6 +18,7 @@ class SiteUser {
       : id = json['id'],
         firstName = json['first_name'],
         surname = json['surname'],
+        description = json['description'],
         location = json['location'];
 
   Map toJson() {

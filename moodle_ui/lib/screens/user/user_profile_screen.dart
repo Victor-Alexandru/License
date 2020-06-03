@@ -106,6 +106,28 @@ class _UserProfileViewState extends State<UserProfileView> {
         Container(
           height: MediaQuery.of(context).size.height / 10,
         ),
+        Container(
+          width: MediaQuery.of(context).size.width / 1.2,
+          height:MediaQuery.of(context).size.height / 10 ,
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                borderRadius: BorderRadius.circular(18.0),
+                color: Colors.white),
+            child: Center(
+              child: Wrap(
+                children: <Widget>[
+                  Text(
+                    this._currentUser != null
+                        ? this._currentUser.description
+                        : "",
+                    style: TextStyle(fontSize: 24, color: Colors.black),
+                  ),
+                ],
+              ),
+            )),
+        Container(
+          height: MediaQuery.of(context).size.height / 10,
+        ),
         MaterialButton(
           onPressed: () {
             _showDialog();
@@ -309,22 +331,22 @@ class _UserProfileViewState extends State<UserProfileView> {
       color: Colors.redAccent,
       child: Center(
         child: ListView.builder(
-          itemCount: _ownerGroups.length == 0 ? 1 : _ownerGroups.length+1,
-          itemBuilder: (context, index)  {
+          itemCount: _ownerGroups.length == 0 ? 1 : _ownerGroups.length + 1,
+          itemBuilder: (context, index) {
             if (index == 0) {
               // return the header
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                     child: new Text(
-                      "Owned groups",
-                      style: TextStyle(color: Colors.black, fontSize: 24),
-                    )),
+                  "Owned groups",
+                  style: TextStyle(color: Colors.black, fontSize: 24),
+                )),
               );
             }
             index -= 1;
             return GroupCell(context, index);
-            },
+          },
         ),
       ),
     );
