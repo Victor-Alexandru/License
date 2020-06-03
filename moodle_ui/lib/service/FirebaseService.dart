@@ -8,12 +8,7 @@ class FirebaseService {
   FirebaseService();
 
   setFirebaseToken(String username) async {
-    print("--------------------");
     await _firebaseMessaging.getToken().then((token) async {
-      print("----------DEVICE TOKEN------------");
-      print('$token');
-      print("-----------------------------------");
-
       var qsnapshot = await databaseReference
           .collection('DeviceTokens')
           .where('device_token', isEqualTo: token.toString())
@@ -26,7 +21,6 @@ class FirebaseService {
           'username': username,
         });
 
-        print(ref.documentID);
       } else {
         qsnapshot.documents.forEach((elem) {
           elem.reference.updateData(<String,dynamic>{

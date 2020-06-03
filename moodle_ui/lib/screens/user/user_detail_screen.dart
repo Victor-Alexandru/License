@@ -175,13 +175,15 @@ class _UserDetailViewState extends State<UserDetailView> {
                   alignment: MainAxisAlignment.center,
                   children: <Widget>[
                     (!utils.isUserInGroupFromUsersGroupList(
-                        _currentUserUserGroups, _ownerGroups[index]))?
-                    IconButton(
-                        icon: new Icon(Icons.send, color: Colors.blue),
-                        onPressed: () {
-                          ///make post to create a request to group
-                          _postReqToCreateRequestToGroup(_ownerGroups[index]);
-                        }):Container(),
+                            _currentUserUserGroups, _ownerGroups[index]))
+                        ? IconButton(
+                            icon: new Icon(Icons.send, color: Colors.blue),
+                            onPressed: () {
+                              ///make post to create a request to group
+                              _postReqToCreateRequestToGroup(
+                                  _ownerGroups[index]);
+                            })
+                        : Container(),
                     utils.isUserInGroupFromUsersGroupList(
                             _currentUserUserGroups, _ownerGroups[index])
                         ? Icon(Icons.check, color: Colors.blue)
@@ -200,20 +202,23 @@ class _UserDetailViewState extends State<UserDetailView> {
       padding: EdgeInsets.all(16.0),
       child: Center(
         child: Stack(children: <Widget>[
-          Row(
-            children: <Widget>[
-              SizedBox(
-                width: 16,
-              ),
-              Text(
-                "User  " + this._nearbyUser.firstName + " owner groups ",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
           ListView.builder(
-            itemCount: _ownerGroups.length,
-            itemBuilder: (context, index) => GroupCell(context, index),
+            itemCount: _ownerGroups.length == 0 ? 1 : _ownerGroups.length+1,
+            itemBuilder: (context, index)  {
+              if (index == 0) {
+                // return the header
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                      child: new Text(
+                        this._nearbyUser.firstName + " - owner groups",
+                        style: TextStyle(color: Colors.black, fontSize: 24),
+                      )),
+                );
+              }
+              index -= 1;
+              return GroupCell(context, index);
+              },
           ),
         ]),
       ),

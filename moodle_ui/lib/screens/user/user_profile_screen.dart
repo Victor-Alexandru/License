@@ -307,21 +307,25 @@ class _UserProfileViewState extends State<UserProfileView> {
   Widget OwnerGroupProfilePage() {
     return Container(
       color: Colors.redAccent,
-      padding: EdgeInsets.all(16.0),
       child: Center(
-        child: Stack(children: <Widget>[
-          Row(
-            children: <Widget>[
-              SizedBox(
-                width: 16,
-              ),
-            ],
-          ),
-          ListView.builder(
-            itemCount: _ownerGroups.length,
-            itemBuilder: (context, index) => GroupCell(context, index),
-          ),
-        ]),
+        child: ListView.builder(
+          itemCount: _ownerGroups.length == 0 ? 1 : _ownerGroups.length+1,
+          itemBuilder: (context, index)  {
+            if (index == 0) {
+              // return the header
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                    child: new Text(
+                      "Owned groups",
+                      style: TextStyle(color: Colors.black, fontSize: 24),
+                    )),
+              );
+            }
+            index -= 1;
+            return GroupCell(context, index);
+            },
+        ),
       ),
     );
   }
@@ -401,25 +405,27 @@ class _UserProfileViewState extends State<UserProfileView> {
   Widget RequestsPage() {
     return Container(
       color: Colors.redAccent,
-      padding: EdgeInsets.all(16.0),
       child: Center(
-        child: Stack(children: <Widget>[
-          Row(
-            children: <Widget>[
-              SizedBox(
-                width: 16,
-              ),
-              Text(
-                " Pending requests to your groups  ",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          ListView.builder(
-            itemCount: _currentRequestToGroups.length,
-            itemBuilder: (context, index) => RequestCell(context, index),
-          ),
-        ]),
+        child: ListView.builder(
+          itemCount: _currentRequestToGroups.length == 0
+              ? 1
+              : _currentRequestToGroups.length + 1,
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              // return the header
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                    child: new Text(
+                  "Requests to your groups",
+                  style: TextStyle(color: Colors.black, fontSize: 24),
+                )),
+              );
+            }
+            index -= 1;
+            return RequestCell(context, index);
+          },
+        ),
       ),
     );
   }

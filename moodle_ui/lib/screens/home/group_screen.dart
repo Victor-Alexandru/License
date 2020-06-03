@@ -50,12 +50,25 @@ class _GroupScreenState extends State<GroupScreen> {
     return Scaffold(
       backgroundColor: Colors.redAccent,
       body: Center(
-        child: Stack(children: <Widget>[
-          ListView.builder(
-            itemCount: _associateGroups.length,
-            itemBuilder: (context, index) => GroupCell(context, index),
-          ),
-        ]),
+        child: ListView.builder(
+          itemCount:
+              _associateGroups.length == 0 ? 1 : _associateGroups.length + 1,
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              // return the header
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                    child: new Text(
+                      "Associate Groups",
+                      style: TextStyle(color: Colors.black, fontSize: 24),
+                    )),
+              );
+            }
+            index -= 1;
+            return GroupCell(context, index);
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _getGroups(),

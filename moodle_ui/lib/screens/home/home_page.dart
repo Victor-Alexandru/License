@@ -80,13 +80,23 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.redAccent,
-      body: Center(
-        child: Stack(children: <Widget>[
-          ListView.builder(
-            itemCount: _nearbySiteUsers.length,
-            itemBuilder: (context, index) => SiteUserCell(context, index),
-          ),
-        ]),
+      body: ListView.builder(
+        itemCount: _nearbySiteUsers.length == 0 ? 1 : _nearbySiteUsers.length+1,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            // return the header
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                  child: new Text(
+                "Nearby Users",
+                style: TextStyle(color: Colors.black, fontSize: 24),
+              )),
+            );
+          }
+          index -= 1;
+          return SiteUserCell(context, index);
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _getNearbyUsers(),
@@ -121,9 +131,6 @@ class _HomePageState extends State<HomePage> {
       }
     }
     _locationData = await location.getLocation();
-
-    // here it ends --- how to get the Location object based on user location permissions
-    // getting the locality based on latitude and longitude
 
     final coordinates =
         new Coordinates(_locationData.latitude, _locationData.longitude);

@@ -85,15 +85,27 @@ class _GroupDetailViewState extends State<GroupDetailView> {
   Widget NotificationPage() {
     return Container(
       color: Colors.redAccent,
-      padding: EdgeInsets.all(16.0),
       child: Center(
-        child: Stack(children: <Widget>[
-          ListView.builder(
-            itemCount: _groupNotifications.length,
-            itemBuilder: (context, index) =>
-                GroupNotificationCell(context, index),
-          ),
-        ]),
+        child: ListView.builder(
+          itemCount: _groupNotifications.length == 0
+              ? 1
+              : _groupNotifications.length + 1,
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              // return the header
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                    child: new Text(
+                      "Notifications",
+                      style: TextStyle(color: Colors.black, fontSize: 24),
+                    )),
+              );
+            }
+            index -= 1;
+            return GroupNotificationCell(context, index);
+          },
+        ),
       ),
     );
   }
@@ -190,8 +202,22 @@ class _GroupDetailViewState extends State<GroupDetailView> {
     return Center(
       child: Stack(children: <Widget>[
         ListView.builder(
-          itemCount: _members.length,
-          itemBuilder: (context, index) => SiteUserCell(context, index),
+          itemCount: _members.length == 0 ? 1 : _members.length + 1,
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              // return the header
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                    child: new Text(
+                  "Group Members",
+                  style: TextStyle(color: Colors.black, fontSize: 24),
+                )),
+              );
+            }
+            index -= 1;
+            return SiteUserCell(context, index);
+          },
         ),
       ]),
     );
