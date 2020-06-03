@@ -30,7 +30,9 @@ class _UserProfileViewState extends State<UserProfileView> {
   var _currentUserUserGroups = new List<UserGroup>();
   var _currentRequestToGroups = new List<RequestToGroup>();
   final _formKey = GlobalKey<FormState>();
+  final _formKeyTwo = GlobalKey<FormState>();
   final _groupNameCTR = TextEditingController();
+  final _groupNameUpdCTR = TextEditingController();
   final _groupSizeCTR = TextEditingController();
   final _groupDurationCTR = TextEditingController();
   final _groupSkillCTR = TextEditingController();
@@ -60,6 +62,7 @@ class _UserProfileViewState extends State<UserProfileView> {
     _groupSizeCTR.dispose();
     _groupDurationCTR.dispose();
     _groupSkillCTR.dispose();
+    _groupNameUpdCTR.dispose();
     super.dispose();
   }
 
@@ -79,76 +82,127 @@ class _UserProfileViewState extends State<UserProfileView> {
 
   Widget ProfilePage() {
     Size screenSize = MediaQuery.of(context).size;
-    return Column(
-      children: <Widget>[
-        Stack(
-          children: <Widget>[
-            _buildCoverImage(screenSize),
-            SafeArea(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    SafeArea(
-                        child: SingleChildScrollView(
-                      child: Column(
-                        children: <Widget>[
-                          _buildProfileImage(),
-                          _buildFullName(),
-                        ],
-                      ),
-                    )),
-                  ],
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          Stack(
+            children: <Widget>[
+              _buildCoverImage(screenSize),
+              SafeArea(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      SafeArea(
+                          child: SingleChildScrollView(
+                        child: Column(
+                          children: <Widget>[
+                            _buildProfileImage(),
+                            _buildFullName(),
+                          ],
+                        ),
+                      )),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-        Container(
-          height: MediaQuery.of(context).size.height / 10,
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width / 1.2,
-          height:MediaQuery.of(context).size.height / 10 ,
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.black),
-                borderRadius: BorderRadius.circular(18.0),
-                color: Colors.white),
-            child: Center(
-              child: Wrap(
-                children: <Widget>[
-                  Text(
-                    this._currentUser != null
-                        ? this._currentUser.description
-                        : "",
-                    style: TextStyle(fontSize: 24, color: Colors.black),
-                  ),
-                ],
-              ),
-            )),
-        Container(
-          height: MediaQuery.of(context).size.height / 10,
-        ),
-        MaterialButton(
-          onPressed: () {
-            _showDialog();
-          },
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-              side: BorderSide(color: Colors.black)),
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width / 1.5,
-            child: Text(
-              " Create a group ",
-              style: TextStyle(fontSize: 24),
-              textAlign: TextAlign.center,
-            ),
+            ],
           ),
-          color: Colors.white,
-          textColor: Colors.black,
-          padding: EdgeInsets.all(8.0),
-        ),
-      ],
+          Container(
+            height: MediaQuery.of(context).size.height / 10,
+          ),
+          Container(
+              width: MediaQuery.of(context).size.width / 1.2,
+              height: MediaQuery.of(context).size.height / 10,
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  borderRadius: BorderRadius.circular(18.0),
+                  color: Colors.white),
+              child: Center(
+                child: Wrap(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        this._currentUser != null
+                            ? this._currentUser.description
+                            : "",
+                        style: TextStyle(fontSize: 24, color: Colors.black),
+                      ),
+                    ),
+                  ],
+                ),
+              )),
+          Container(
+            height: MediaQuery.of(context).size.height / 10,
+          ),
+          MaterialButton(
+            onPressed: () {
+              _showDialog();
+            },
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                side: BorderSide(color: Colors.black)),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width / 1.5,
+              child: Text(
+                " Create a group ",
+                style: TextStyle(fontSize: 24),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            color: Colors.white,
+            textColor: Colors.black,
+            padding: EdgeInsets.all(8.0),
+          ),
+        ],
+      ),
     );
+  }
+
+  _showUpdateGroupDialog(Group group,String groupName) {
+    showDialog(
+        context: context,
+        builder: (BuildContext contex) {
+          return AlertDialog(
+            content: ListView(children: <Widget>[
+              Form(
+                key: _formKeyTwo,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: _groupNameUpdCTR,
+                        decoration: new InputDecoration(
+                          labelText: "Group Name",
+                          fillColor: Colors.white,
+                          border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(25.0),
+                            borderSide: new BorderSide(),
+                          ),
+                          //fillColor: Colors.green
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: RaisedButton(
+                        child: Text("Update"),
+                        onPressed: () {
+                          if (_formKeyTwo.currentState.validate()) {
+                            print(_groupNameUpdCTR.text);
+                            _changeGroupName(group, _groupNameUpdCTR.text);
+                          }
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ]),
+          );
+        });
   }
 
   _showDialog() {
@@ -156,116 +210,95 @@ class _UserProfileViewState extends State<UserProfileView> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            content: Stack(
-              overflow: Overflow.visible,
+            content: ListView(
               children: <Widget>[
-                Positioned(
-                  right: -40.0,
-                  top: -40.0,
-                  child: InkResponse(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: CircleAvatar(
-                      child: Icon(
-                        Icons.close,
-                        color: Colors.black,
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: _groupNameCTR,
+                          decoration: new InputDecoration(
+                            labelText: "Name",
+                            fillColor: Colors.white,
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(25.0),
+                              borderSide: new BorderSide(),
+                            ),
+                            //fillColor: Colors.green
+                          ),
+                        ),
                       ),
-                      backgroundColor: Colors.redAccent,
-                    ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: _groupSizeCTR,
+                          decoration: new InputDecoration(
+                            labelText: "Size",
+                            fillColor: Colors.white,
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(25.0),
+                              borderSide: new BorderSide(),
+                            ),
+                            //fillColor: Colors.green
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: _groupDurationCTR,
+                          decoration: new InputDecoration(
+                            labelText: "Duration",
+                            fillColor: Colors.white,
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(25.0),
+                              borderSide: new BorderSide(),
+                            ),
+                            //fillColor: Colors.green
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: _groupSkillCTR,
+                          decoration: new InputDecoration(
+                            labelText: "Skill",
+                            fillColor: Colors.white,
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(25.0),
+                              borderSide: new BorderSide(),
+                            ),
+                            //fillColor: Colors.green
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: RaisedButton(
+                          child: Text("Create"),
+                          onPressed: () {
+                            if (_formKey.currentState.validate()) {
+                              print(_groupNameCTR.text);
+                              print(_groupSizeCTR.text);
+                              print(_groupDurationCTR.text);
+                              print(_groupSkillCTR.text);
+                              print("Totul este ok");
+                              this._webservice.makeAPostGroupRequest(
+                                  _groupNameCTR.text,
+                                  _groupSizeCTR.text,
+                                  _groupDurationCTR.text,
+                                  _groupSkillCTR.text);
+                            }
+                          },
+                        ),
+                      )
+                    ],
                   ),
-                ),
-                ListView(
-                  children: <Widget>[
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: TextFormField(
-                              controller: _groupNameCTR,
-                              decoration: new InputDecoration(
-                                labelText: "Name",
-                                fillColor: Colors.white,
-                                border: new OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(25.0),
-                                  borderSide: new BorderSide(),
-                                ),
-                                //fillColor: Colors.green
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: TextFormField(
-                              controller: _groupSizeCTR,
-                              decoration: new InputDecoration(
-                                labelText: "Size",
-                                fillColor: Colors.white,
-                                border: new OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(25.0),
-                                  borderSide: new BorderSide(),
-                                ),
-                                //fillColor: Colors.green
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: TextFormField(
-                              controller: _groupDurationCTR,
-                              decoration: new InputDecoration(
-                                labelText: "Duration",
-                                fillColor: Colors.white,
-                                border: new OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(25.0),
-                                  borderSide: new BorderSide(),
-                                ),
-                                //fillColor: Colors.green
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: TextFormField(
-                              controller: _groupSkillCTR,
-                              decoration: new InputDecoration(
-                                labelText: "Skill",
-                                fillColor: Colors.white,
-                                border: new OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(25.0),
-                                  borderSide: new BorderSide(),
-                                ),
-                                //fillColor: Colors.green
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: RaisedButton(
-                              child: Text("Create"),
-                              onPressed: () {
-                                if (_formKey.currentState.validate()) {
-                                  print(_groupNameCTR.text);
-                                  print(_groupSizeCTR.text);
-                                  print(_groupDurationCTR.text);
-                                  print(_groupSkillCTR.text);
-                                  print("Totul este ok");
-                                  this._webservice.makeAPostGroupRequest(
-                                      _groupNameCTR.text,
-                                      _groupSizeCTR.text,
-                                      _groupDurationCTR.text,
-                                      _groupSkillCTR.text);
-                                }
-                              },
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
                 ),
               ],
             ),
@@ -321,7 +354,8 @@ class _UserProfileViewState extends State<UserProfileView> {
   Widget GroupCell(BuildContext ctx, int index) {
     return GestureDetector(
         onTap: () {
-          this._getGroups();
+//          this._getGroups();
+          _showUpdateGroupDialog(_ownerGroups[index],_ownerGroups[index].name);
         },
         child: _ownerGroups[index].GroupProfileView(this._webservice));
   }
@@ -500,6 +534,35 @@ class _UserProfileViewState extends State<UserProfileView> {
       if (response.statusCode == 200) {
         setState(() {
           requestToGroup.status = status;
+        });
+      } else {
+        print("put not success");
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  _changeGroupName(Group group, String name) async {
+    String patchJson = '{"name":"' + group.name + '"}';
+    String token = this._webservice.token.access;
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    try {
+      http.Response response = await http.patch(
+          'http://192.168.1.108:8000/monitor/groups/' +
+              group.id.toString() +
+              '/',
+          headers: headers,
+          body: patchJson);
+      print(response);
+      if (response.statusCode == 200) {
+        setState(() {
+          group.setName(name);
         });
       } else {
         print("put not success");

@@ -22,6 +22,8 @@ class Group {
 
   String get name => _name;
 
+  void setName(name) => _name = name;
+
   int get id => _id;
 
   int get ownerId => _ownerId;
