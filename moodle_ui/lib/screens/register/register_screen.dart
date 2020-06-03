@@ -13,7 +13,7 @@ class RegisterScreen extends StatefulWidget {
 
 class RegisterScreenState extends State<RegisterScreen> {
   final formKey = new GlobalKey<FormState>();
-  String _password, _username, _password2, _email;
+  String _password, _username, _password2, _email, _description;
   bool _isLoading = false;
 
   final scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -28,6 +28,7 @@ class RegisterScreenState extends State<RegisterScreen> {
       _username.trim();
       _password.trim();
       _password2.trim();
+      _description.trim();
       return _performRegister();
     }
   }
@@ -40,6 +41,7 @@ class RegisterScreenState extends State<RegisterScreen> {
     queryParameters['email'] = _email;
     queryParameters['password'] = _password;
     queryParameters['password2'] = _password2;
+    queryParameters['description'] = _description;
 
     String body = json.encode(queryParameters);
 
@@ -51,6 +53,11 @@ class RegisterScreenState extends State<RegisterScreen> {
     return response.statusCode;
   }
 
+  void _showSnackBar(String text) {
+    scaffoldKey.currentState
+        .showSnackBar(new SnackBar(content: new Text(text)));
+  }
+
   @override
   Widget build(BuildContext context) {
     var registerBtn = Padding(
@@ -59,9 +66,9 @@ class RegisterScreenState extends State<RegisterScreen> {
           onPressed: () async {
             int statusCode = await _submit();
             if (statusCode == 201) {
-              print("post cu succes");
+              _showSnackBar("Register succesfully");
             } else {
-              print("Sa busit ceva");
+              _showSnackBar("Register failed");
             }
           },
           shape: RoundedRectangleBorder(
@@ -103,6 +110,15 @@ class RegisterScreenState extends State<RegisterScreen> {
                   onSaved: (val) => _email = val,
                   decoration: new InputDecoration(
                       labelText: "Email", icon: Icon(Icons.email)),
+                ),
+              ),
+              new Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: new TextFormField(
+                  onSaved: (val) => _description = val,
+                  decoration: new InputDecoration(
+                      labelText: "Profile Description",
+                      icon: Icon(Icons.description)),
                 ),
               ),
               new Padding(
