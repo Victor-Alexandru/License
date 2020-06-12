@@ -29,7 +29,11 @@ class RegisterScreenState extends State<RegisterScreen> {
       _password.trim();
       _password2.trim();
       _description.trim();
-      return _performRegister();
+      if(_password != _password2){
+        _showSnackBar("Password do not match");
+      }else {
+        return _performRegister();
+      }
     }
   }
 
@@ -64,11 +68,13 @@ class RegisterScreenState extends State<RegisterScreen> {
         padding: const EdgeInsets.all(8.0),
         child: MaterialButton(
           onPressed: () async {
-            int statusCode = await _submit();
-            if (statusCode == 201) {
-              _showSnackBar("Register succesfully");
-            } else {
-              _showSnackBar("Register failed");
+            if (formKey.currentState.validate()) {
+              int statusCode = await _submit();
+              if (statusCode == 201) {
+                _showSnackBar("Register succesfully");
+              } else {
+                _showSnackBar("Register failed");
+              }
             }
           },
           shape: RoundedRectangleBorder(
@@ -98,7 +104,9 @@ class RegisterScreenState extends State<RegisterScreen> {
                 child: new TextFormField(
                   onSaved: (val) => _username = val,
                   validator: (val) {
-                    return null;
+                    return val.length < 4
+                        ? "Username must have at least 4 chars"
+                        : null;
                   },
                   decoration: new InputDecoration(
                       labelText: "Username", icon: Icon(Icons.person)),
@@ -108,6 +116,13 @@ class RegisterScreenState extends State<RegisterScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: new TextFormField(
                   onSaved: (val) => _email = val,
+                  validator: (val) {
+                    return RegExp(
+                                r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
+                            .hasMatch(val)
+                        ? null
+                        : "Input must be an email";
+                  },
                   decoration: new InputDecoration(
                       labelText: "Email", icon: Icon(Icons.email)),
                 ),
@@ -116,6 +131,11 @@ class RegisterScreenState extends State<RegisterScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: new TextFormField(
                   onSaved: (val) => _description = val,
+                  validator: (val) {
+                    return val.length < 10
+                        ? "Description must have at least 10 chars"
+                        : null;
+                  },
                   decoration: new InputDecoration(
                       labelText: "Profile Description",
                       icon: Icon(Icons.description)),
@@ -126,6 +146,11 @@ class RegisterScreenState extends State<RegisterScreen> {
                 child: new TextFormField(
                   obscureText: true,
                   onSaved: (val) => _password = val,
+                  validator: (val) {
+                    return val.length < 4
+                        ? "Password must have at least 4 chars"
+                        : null;
+                  },
                   decoration: new InputDecoration(
                       labelText: "Password", icon: Icon(Icons.security)),
                 ),
@@ -135,6 +160,11 @@ class RegisterScreenState extends State<RegisterScreen> {
                 child: new TextFormField(
                   obscureText: true,
                   onSaved: (val) => _password2 = val,
+                  validator: (val) {
+                    return val.length < 4
+                        ? "Password must have at least 4 chars"
+                        : null;
+                  },
                   decoration: new InputDecoration(
                       labelText: "Confirm Password",
                       icon: Icon(Icons.security)),

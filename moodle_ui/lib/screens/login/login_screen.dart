@@ -91,8 +91,8 @@ class LoginScreenState extends State<LoginScreen>
                 child: new TextFormField(
                   onSaved: (val) => _username = val,
                   validator: (val) {
-                    return val.length < 3
-                        ? "Username must have at least 3 chars"
+                    return val.length < 4
+                        ? "Username must have at least 4 chars"
                         : null;
                   },
                   decoration: new InputDecoration(

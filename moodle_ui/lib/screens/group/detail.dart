@@ -97,9 +97,9 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                     child: new Text(
-                      "Notifications",
-                      style: TextStyle(color: Colors.black, fontSize: 24),
-                    )),
+                  "Notifications",
+                  style: TextStyle(color: Colors.black, fontSize: 24),
+                )),
               );
             }
             index -= 1;
@@ -319,6 +319,10 @@ class _GroupDetailViewState extends State<GroupDetailView> {
             return 'Message is Required';
           }
 
+          if (value.length > 25) {
+            return 'Message has less than 25 characters';
+          }
+
           return null;
         },
         onSaved: (String value) {
@@ -355,8 +359,12 @@ class _GroupDetailViewState extends State<GroupDetailView> {
         decoration: InputDecoration(labelText: 'Priority'),
         maxLength: 25,
         validator: (String value) {
+          print(value != 'HG');
           if (value.isEmpty) {
             return 'Priority is Required';
+          }
+          if (!(value == 'HG' || value == 'MD' || value == 'LW')) {
+            return 'Priority must be HG MD or LW';
           }
 
           return null;
