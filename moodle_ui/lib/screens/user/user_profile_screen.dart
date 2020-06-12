@@ -387,7 +387,65 @@ class _UserProfileViewState extends State<UserProfileView> {
 //          this._getGroups();
           _showUpdateGroupDialog(_ownerGroups[index], _ownerGroups[index].name);
         },
-        child: _ownerGroups[index].GroupProfileView(this._webservice));
+        child: Card(
+          margin: EdgeInsets.fromLTRB(32, 8, 32, 8),
+          elevation: 4.0,
+          child: Container(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  child: new IconButton(
+                    icon: Icon(Icons.group),
+                    color: Colors.black,
+                    iconSize: 50,
+                    onPressed: () {},
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: Text(
+                      _ownerGroups[index].name,
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                Container(
+                    child: Center(
+                  child: Text(
+                    _ownerGroups[index].skill.name,
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blueAccent),
+                  ),
+                )),
+                ButtonBar(
+                  alignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    IconButton(
+                        iconSize: 32,
+                        icon: new Icon(Icons.delete, color: Colors.red),
+                        onPressed: () async {
+                          int status = await this
+                              ._webservice
+                              .makeDeleteGroupRequest(_ownerGroups[index].id);
+                          if (status >= 200 && status < 300) {
+                            setState(() {
+                              this._ownerGroups.removeWhere(
+                                  (item) => item.id == _ownerGroups[index].id);
+                            });
+                          }
+                        }),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 
   Widget OwnerGroupProfilePage() {

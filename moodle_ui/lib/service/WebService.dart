@@ -218,10 +218,11 @@ class Webservice {
     });
   }
 
-  void makeDeleteGroupRequest(int groupId) async {
+  Future<int> makeDeleteGroupRequest(int groupId) async {
     var url = Uri.http(
         '192.168.1.108:8000', 'monitor/groups/' + groupId.toString() + "/", {});
-    await http.delete(url);
+    var response =  await http.delete(url);
+    return response.statusCode;
   }
 
   void makePatchRequest(String location) async {
