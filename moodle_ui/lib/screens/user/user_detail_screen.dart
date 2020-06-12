@@ -209,7 +209,7 @@ class _UserDetailViewState extends State<UserDetailView> {
                     utils.isUserInGroupFromUsersGroupList(
                             _currentUserUserGroups, _ownerGroups[index])
                         ? Icon(Icons.check, color: Colors.blue)
-                        : Icon(Icons.close, color: Colors.blue),
+                        : Container(),
                   ],
                 ),
               ],

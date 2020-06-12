@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:moodle_ui/models/token.dart';
 import 'package:moodle_ui/screens/home/selection_screen.dart';
 import 'package:moodle_ui/screens/login/login_screen_presenter.dart';
+import 'dart:io';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -27,7 +28,7 @@ class LoginScreenState extends State<LoginScreen>
     _presenter = new LoginScreenPresenter(this);
   }
 
-  void _submit() {
+  void _submit() async {
     final form = formKey.currentState;
 
     if (form.validate()) {
@@ -37,7 +38,15 @@ class LoginScreenState extends State<LoginScreen>
       _password.trim();
       print(_username);
       print(_password);
-      _presenter.doLogin(_username, _password);
+
+      try {
+        final result = await InternetAddress.lookup('google.com');
+        if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+          _presenter.doLogin(_username, _password);
+        }
+      } on SocketException catch (_) {
+        _showSnackBar('not connected');
+      }
     }
   }
 
