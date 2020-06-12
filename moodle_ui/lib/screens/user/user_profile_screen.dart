@@ -159,7 +159,7 @@ class _UserProfileViewState extends State<UserProfileView> {
     );
   }
 
-  _showUpdateGroupDialog(Group group,String groupName) {
+  _showUpdateGroupDialog(Group group, String groupName) {
     showDialog(
         context: context,
         builder: (BuildContext contex) {
@@ -174,6 +174,11 @@ class _UserProfileViewState extends State<UserProfileView> {
                       padding: EdgeInsets.all(8.0),
                       child: TextFormField(
                         controller: _groupNameUpdCTR,
+                        validator: (val) {
+                          return val.length < 5
+                              ? "Name must have at least 5 chars"
+                              : null;
+                        },
                         decoration: new InputDecoration(
                           labelText: "Group Name",
                           fillColor: Colors.white,
@@ -205,6 +210,13 @@ class _UserProfileViewState extends State<UserProfileView> {
         });
   }
 
+  bool isNumeric(String s) {
+    if (s == null) {
+      return false;
+    }
+    return double.tryParse(s) != null;
+  }
+
   _showDialog() {
     showDialog(
         context: context,
@@ -221,6 +233,11 @@ class _UserProfileViewState extends State<UserProfileView> {
                         padding: EdgeInsets.all(8.0),
                         child: TextFormField(
                           controller: _groupNameCTR,
+                          validator: (val) {
+                            return val.length < 5
+                                ? "Name must have at least 5 chars"
+                                : null;
+                          },
                           decoration: new InputDecoration(
                             labelText: "Name",
                             fillColor: Colors.white,
@@ -236,6 +253,11 @@ class _UserProfileViewState extends State<UserProfileView> {
                         padding: EdgeInsets.all(8.0),
                         child: TextFormField(
                           controller: _groupSizeCTR,
+                          validator: (val) {
+                            return !isNumeric(val)
+                                ? "Size must be an integer"
+                                : null;
+                          },
                           decoration: new InputDecoration(
                             labelText: "Size",
                             fillColor: Colors.white,
@@ -251,6 +273,11 @@ class _UserProfileViewState extends State<UserProfileView> {
                         padding: EdgeInsets.all(8.0),
                         child: TextFormField(
                           controller: _groupDurationCTR,
+                          validator: (val) {
+                            return !isNumeric(val)
+                                ? "Duration must be an integer"
+                                : null;
+                          },
                           decoration: new InputDecoration(
                             labelText: "Duration",
                             fillColor: Colors.white,
@@ -266,6 +293,9 @@ class _UserProfileViewState extends State<UserProfileView> {
                         padding: EdgeInsets.all(8.0),
                         child: TextFormField(
                           controller: _groupSkillCTR,
+                          validator: (val) {
+                            return null;
+                          },
                           decoration: new InputDecoration(
                             labelText: "Skill",
                             fillColor: Colors.white,
@@ -355,7 +385,7 @@ class _UserProfileViewState extends State<UserProfileView> {
     return GestureDetector(
         onTap: () {
 //          this._getGroups();
-          _showUpdateGroupDialog(_ownerGroups[index],_ownerGroups[index].name);
+          _showUpdateGroupDialog(_ownerGroups[index], _ownerGroups[index].name);
         },
         child: _ownerGroups[index].GroupProfileView(this._webservice));
   }
