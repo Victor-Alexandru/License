@@ -27,6 +27,7 @@ class _UserDetailViewState extends State<UserDetailView> {
   PageController _pageController;
   var _ownerGroups = new List<Group>();
   var _currentUserUserGroups = new List<UserGroup>();
+  final scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -52,6 +53,7 @@ class _UserDetailViewState extends State<UserDetailView> {
     // TODO: implement build
     return MaterialApp(
       home: Scaffold(
+        key: scaffoldKey,
         backgroundColor: Colors.redAccent,
         body: PageView(
           controller: _pageController,
@@ -92,7 +94,7 @@ class _UserDetailViewState extends State<UserDetailView> {
         ),
         Container(
             width: MediaQuery.of(context).size.width / 1.2,
-            height:MediaQuery.of(context).size.height / 10 ,
+            height: MediaQuery.of(context).size.height / 10,
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.black),
                 borderRadius: BorderRadius.circular(18.0),
@@ -229,22 +231,22 @@ class _UserDetailViewState extends State<UserDetailView> {
       child: Center(
         child: Stack(children: <Widget>[
           ListView.builder(
-            itemCount: _ownerGroups.length == 0 ? 1 : _ownerGroups.length+1,
-            itemBuilder: (context, index)  {
+            itemCount: _ownerGroups.length == 0 ? 1 : _ownerGroups.length + 1,
+            itemBuilder: (context, index) {
               if (index == 0) {
                 // return the header
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
                       child: new Text(
-                        this._nearbyUser.firstName + " - owner groups",
-                        style: TextStyle(color: Colors.black, fontSize: 24),
-                      )),
+                    this._nearbyUser.firstName + " - owner groups",
+                    style: TextStyle(color: Colors.black, fontSize: 24),
+                  )),
                 );
               }
               index -= 1;
               return GroupCell(context, index);
-              },
+            },
           ),
         ]),
       ),
@@ -316,7 +318,15 @@ class _UserDetailViewState extends State<UserDetailView> {
         .then((response) {
       if (response.statusCode == 201) {
         print("REQUEST to group creat cu success");
+        _showSnackBar("Request sent");
+      }else{
+        _showSnackBar("Request failed");
       }
     });
+  }
+
+  void _showSnackBar(String text) {
+    scaffoldKey.currentState
+        .showSnackBar(new SnackBar(content: new Text(text)));
   }
 }
