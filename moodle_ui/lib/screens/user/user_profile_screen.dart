@@ -260,7 +260,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                                 : null;
                           },
                           decoration: new InputDecoration(
-                            labelText: "Size",
+                            labelText: "Size (nr of members)",
                             fillColor: Colors.white,
                             border: new OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(25.0),
@@ -280,7 +280,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                                 : null;
                           },
                           decoration: new InputDecoration(
-                            labelText: "Duration",
+                            labelText: "Duration (days) ",
                             fillColor: Colors.white,
                             border: new OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(25.0),

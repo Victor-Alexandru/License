@@ -291,6 +291,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                         }
                         this._webservice.addFireBaseMessage(
                             _messageText, _currentGroup.name, usernames);
+                        this._getGroupNotifications();
                       }
                     });
 
