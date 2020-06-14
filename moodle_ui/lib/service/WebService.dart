@@ -186,7 +186,7 @@ class Webservice {
     }
   }
 
-  void makeAPostGroupRequest(String groupName, String groupSize,
+  Future<int> makeAPostGroupRequest(String groupName, String groupSize,
       String groupDuration, String skillName) async {
     var url = Uri.http('192.168.1.108:8000', 'monitor/groups/', {});
 
@@ -199,29 +199,33 @@ class Webservice {
     String body = json.encode(this.queryParameters);
     String access = this.token.access;
 
-    await http
-        .post(
+    var response = await http.post(
       url,
       headers: {
         "Content-Type": "application/json",
         'Authorization': 'Bearer $access'
       },
       body: body,
-    )
-        .then((response) {
-      if (response.statusCode == 201) {
-        print("post cu succes");
-      } else {
-        print("Sa busit ceva");
-        print(response.statusCode);
-      }
-    });
+    );
+
+    if (response.statusCode == 201) {
+      print("post cu succes");
+    } else {
+      print("Sa busit ceva");
+      print(response.statusCode);
+    }
+    print(response.body);
+    var decodedJSON = json.decode(response.body);
+    if (response.statusCode == 201) {
+      return decodedJSON['id'];
+    } else
+      return -1;
   }
 
   Future<int> makeDeleteGroupRequest(int groupId) async {
     var url = Uri.http(
         '192.168.1.108:8000', 'monitor/groups/' + groupId.toString() + "/", {});
-    var response =  await http.delete(url);
+    var response = await http.delete(url);
     return response.statusCode;
   }
 
@@ -232,8 +236,8 @@ class Webservice {
     String access = this.token.access;
     String body = json.encode(this.queryParameters);
 
-    var url = Uri.http(
-        '192.168.1.108:8000', 'monitor/site-users/' + sU.id.toString() + "/", {});
+    var url = Uri.http('192.168.1.108:8000',
+        'monitor/site-users/' + sU.id.toString() + "/", {});
 
     await http.patch(url,
         headers: {

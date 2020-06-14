@@ -24,6 +24,10 @@ class Group {
 
   void setName(name) => _name = name;
 
+  void setId(id) => _id = id;
+
+  void setSkill(skill) => _skill = skill;
+
   int get id => _id;
 
   int get ownerId => _ownerId;

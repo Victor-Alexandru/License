@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:moodle_ui/models/group.dart';
 import 'package:moodle_ui/models/request-to-group.dart';
 import 'package:moodle_ui/models/site-user.dart';
+import 'package:moodle_ui/models/skill.dart';
 import 'package:moodle_ui/models/token.dart';
 import 'package:http/http.dart' as http;
 import 'package:moodle_ui/models/user-group.dart';
@@ -311,18 +312,32 @@ class _UserProfileViewState extends State<UserProfileView> {
                         padding: const EdgeInsets.all(8.0),
                         child: RaisedButton(
                           child: Text("Create"),
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState.validate()) {
                               print(_groupNameCTR.text);
                               print(_groupSizeCTR.text);
                               print(_groupDurationCTR.text);
                               print(_groupSkillCTR.text);
                               print("Totul este ok");
-                              this._webservice.makeAPostGroupRequest(
-                                  _groupNameCTR.text,
-                                  _groupSizeCTR.text,
-                                  _groupDurationCTR.text,
-                                  _groupSkillCTR.text);
+                              int id = await this
+                                  ._webservice
+                                  .makeAPostGroupRequest(
+                                      _groupNameCTR.text,
+                                      _groupSizeCTR.text,
+                                      _groupDurationCTR.text,
+                                      _groupSkillCTR.text);
+                              print(id);
+                              if (id != -1) {
+                                Group gr = new Group(
+                                    _groupNameCTR.text,
+                                    int.parse(_groupDurationCTR.text),
+                                    int.parse(_groupDurationCTR.text));
+                                gr.setId(id);
+                                gr.setSkill(new Skill(_groupSkillCTR.text));
+                                setState(() {
+                                  this._ownerGroups.add(gr);
+                                });
+                              }
                             }
                           },
                         ),
