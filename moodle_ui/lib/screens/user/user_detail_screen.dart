@@ -63,48 +63,52 @@ class _UserDetailViewState extends State<UserDetailView> {
 
   Widget ProfilePage() {
     Size screenSize = MediaQuery.of(context).size;
-    return Stack(
+    return Column(
       children: <Widget>[
-        _buildCoverImage(screenSize),
-        SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                SafeArea(
-                    child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      _buildProfileImage(),
-                      _buildFullName(),
-                    ],
-                  ),
-                )),
-                Container(
-                  height: MediaQuery.of(context).size.height / 10,
-                ),
-                Container(
-                    width: MediaQuery.of(context).size.width / 1.2,
-                    height:MediaQuery.of(context).size.height / 10 ,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.circular(18.0),
-                        color: Colors.white),
-                    child: Center(
-                      child: Wrap(
+        Stack(
+          children: <Widget>[
+            _buildCoverImage(screenSize),
+            SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    SafeArea(
+                        child: SingleChildScrollView(
+                      child: Column(
                         children: <Widget>[
-                          Text(
-                            this._nearbyUser != null
-                                ? this._nearbyUser.description
-                                : "",
-                            style: TextStyle(fontSize: 24, color: Colors.black),
-                          ),
+                          _buildProfileImage(),
+                          _buildFullName(),
                         ],
                       ),
                     )),
-              ],
+                  ],
+                ),
+              ),
             ),
-          ),
+          ],
         ),
+        Container(
+          height: MediaQuery.of(context).size.height / 10,
+        ),
+        Container(
+            width: MediaQuery.of(context).size.width / 1.2,
+            height:MediaQuery.of(context).size.height / 10 ,
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                borderRadius: BorderRadius.circular(18.0),
+                color: Colors.white),
+            child: Center(
+              child: Wrap(
+                children: <Widget>[
+                  Text(
+                    this._nearbyUser != null
+                        ? this._nearbyUser.description
+                        : "",
+                    style: TextStyle(fontSize: 24, color: Colors.black),
+                  ),
+                ],
+              ),
+            )),
       ],
     );
   }
