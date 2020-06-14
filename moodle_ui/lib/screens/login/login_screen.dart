@@ -104,6 +104,11 @@ class LoginScreenState extends State<LoginScreen>
                 child: new TextFormField(
                   obscureText: true,
                   onSaved: (val) => _password = val,
+                  validator: (val) {
+                    return val.length < 4
+                        ? "Password must have at least 4 chars"
+                        : null;
+                  },
                   decoration: new InputDecoration(
                       labelText: "Password", icon: Icon(Icons.security)),
                 ),
